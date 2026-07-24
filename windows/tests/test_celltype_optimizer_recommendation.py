@@ -11,7 +11,7 @@ BACKEND_DIR = Path(__file__).resolve().parents[1] / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from src.spatialscope_analysis.celltype_assignment import (  # noqa: E402
+from src.spatialquant_analysis.celltype_assignment import (  # noqa: E402
     celltype_assignment_recommendation_metrics,
     rank_celltype_assignment_optimizer_results,
     rank_celltype_assignment_parameter_sweep_results,

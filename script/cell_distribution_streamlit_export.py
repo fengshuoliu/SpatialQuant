@@ -1420,7 +1420,7 @@ def _prepare_region_requests(args: argparse.Namespace, output_folder: Path) -> L
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Export SpatialScope Distribution outputs using the original Streamlit plotting contract.")
+    parser = argparse.ArgumentParser(description="Export SpatialQuant Distribution outputs using the original Streamlit plotting contract.")
     parser.add_argument("--output-folder", required=True)
     parser.add_argument(
         "--mode",

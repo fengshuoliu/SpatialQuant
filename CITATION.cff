@@ -1,19 +1,19 @@
 cff-version: 1.2.0
-message: "If you use SpatialScope, please cite the software and the associated Cell article below."
-title: "SpatialScope"
-version: "1.1"
-date-released: 2026-07-18
+message: "If you use SpatialQuant, please cite the software and the associated Cell article below."
+title: "SpatialQuant"
+version: "1.3.0"
+date-released: 2026-07-24
 type: software
 authors:
   - family-names: "Liu"
     given-names: "Fengshuo"
-repository-code: "https://github.com/fengshuoliu/SpatialScope"
+repository-code: "https://github.com/fengshuoliu/SpatialQuant"
 license: "MIT"
 abstract: >-
-  Native macOS application for spatial image analysis from aligned per-marker
-  numeric matrices, including composite visualization, nuclei segmentation,
-  cell type assignment, neighborhood analysis, region analysis, cell
-  distribution analysis, distance analysis, and publication-ready exports.
+  Native macOS and Windows application for spatial image analysis from aligned
+  per-marker numeric matrices, including composite visualization, nuclei
+  segmentation, cell type assignment, neighborhood analysis, region analysis,
+  cell distribution analysis, distance analysis, and publication-ready exports.
 preferred-citation:
   type: article
   title: "Unbiased niche labeling maps immune-excluded niche in bone metastasis"

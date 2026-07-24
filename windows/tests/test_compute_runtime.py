@@ -13,7 +13,7 @@ BACKEND_SRC = Path(__file__).resolve().parents[1] / "backend" / "src"
 if str(BACKEND_SRC) not in sys.path:
     sys.path.insert(0, str(BACKEND_SRC))
 
-from spatialscope_analysis.compute_runtime import (  # noqa: E402
+from spatialquant_analysis.compute_runtime import (  # noqa: E402
     ComputeRuntime,
     _LABEL_SET_LOOKUP_MAX_BYTES,
     _default_runtime_from_environment,
@@ -86,8 +86,8 @@ class ComputeRuntimeCpuFallbackTests(unittest.TestCase):
         with patch.dict(
             "os.environ",
             {
-                "SPATIALSCOPE_GPU_MODE": "off",
-                "SPATIALSCOPE_GPU_PARITY_MODE": "off",
+                "SPATIALQUANT_GPU_MODE": "off",
+                "SPATIALQUANT_GPU_PARITY_MODE": "off",
             },
         ):
             runtime = _default_runtime_from_environment()

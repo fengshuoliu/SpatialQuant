@@ -1,22 +1,82 @@
 <?xml version="1.0" standalone="yes"?>
 <rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
-        <title>SpatialScope</title>
+        <title>SpatialQuant</title>
         <item>
-            <title>1.2.1</title>
-            <pubDate>Sun, 19 Jul 2026 09:50:06 -0400</pubDate>
-            <link>https://fengshuoliu.github.io/SpatialScope/</link>
-            <sparkle:version>4</sparkle:version>
-            <sparkle:shortVersionString>1.2.1</sparkle:shortVersionString>
+            <title>1.3.0</title>
+            <pubDate>Fri, 24 Jul 2026 16:30:50 -0400</pubDate>
+            <link>https://fengshuoliu.github.io/SpatialQuant/</link>
+            <sparkle:version>5</sparkle:version>
+            <sparkle:shortVersionString>1.3.0</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>13.0</sparkle:minimumSystemVersion>
             <description sparkle:format="markdown"><![CDATA[# Changelog
 
-All notable changes to SpatialScope are documented here.
+All notable changes to SpatialQuant are documented here.
 
-## 1.2.1 - 2026-07-19
+## 1.3.0 - 2026-07-24 (macOS and Windows)
+
+- Renamed the application and public project to SpatialQuant to avoid a name collision with an existing publication.
+- Updated the macOS app, Windows app and installer, analysis engine, updater channels, documentation, website, download assets, citation metadata, and repository paths to use the SpatialQuant identity.
+- Kept the scientific workflow, parameter definitions, numerical analysis, and output contracts unchanged.
+- Established new SpatialQuant release and update channels. Users of builds published under the former product identity should install SpatialQuant 1.3.0 manually once before receiving subsequent automatic updates.
+
+## 1.2.6 - 2026-07-20 (Windows)
+
+- Fixed Region Analysis manual ROI editing so displayed cell types and boundaries refresh immediately when their selections change.
+- Added a native WPF regression test that overwrites one stable preview path and verifies the Draw/Edit ROI canvas reloads the new pixels instead of a cached bitmap.
+- Changed cell-type optimizer recommendations to minimize unresolved cells, exposed every suggested parameter for review, and made Apply validate and preserve the exact recommendation through the final run.
+- Expanded scientific workflow smoke coverage for same-path manual-editor preview updates and recommendation handoff behavior.
+- Preserved the macOS application, Sparkle appcast, release tags, and artifacts unchanged.
+
+## 1.2.5 - 2026-07-20 (Windows)
+
+- Added a native automatic update check against the stable Windows channel on GitHub Releases, plus a manual **Check for updates** action in the sidebar.
+- Required an exact Windows setup/checksum asset pair, GitHub's SHA-256 asset digest, the published checksum entry, trusted HTTPS download hosts, and the declared asset size before an installer can run.
+- Added an explicit install prompt, background download progress, clean analysis-engine shutdown, silent in-place installation, and automatic relaunch after a verified update.
+- Added single-instance and installer-ownership safeguards so another running or moved copy cannot be overwritten during an update.
+- Kept update failures isolated from scientific workflow state, throttled automatic checks to once per day, and disabled network checks during deterministic release smoke tests.
+- Preserved the macOS application, Sparkle appcast, release tags, and artifacts unchanged.
+
+## 1.2.4 - 2026-07-20 (Windows)
+
+- Made Distance Analysis mode-specific: nearest-neighbor keeps its Target selector, while cell-to-boundary runs directly from a boundary and one or more compact query-cell selections.
+- Added optimizer switches that keep nuclei minimum/maximum diameters or assignment Voronoi/buffer radii fixed while other parameters are screened; nuclei diameter locks default on and assignment locks default off.
+- Separated the Neighborhood field map from its numbered cluster color key and added a CSV mapping cluster numbers to cluster labels, counts, fractions, and colors.
+- Replaced opaque hashes in user-facing Region and analysis filenames with stable, readable stage and Region names while retaining legacy restore compatibility.
+- Unified section typography and spacing across the native workflow, preserved multi-marker rule pickers with Nucleus selected by default for every all-positive rule, and expanded release smoke coverage.
+- Kept the macOS application, Sparkle appcast, v1.2.1 release, and stable platform-specific download routes unchanged.
+
+## 1.2.3 - 2026-07-20 (Windows)
+
+- Rebuilt Region Analysis around a saved ROI catalog, explicit computational and manual workflows, adjustable display styling, and custom exports.
+- Added a high-contrast white drawing cursor and boundary feedback for polygon and free-draw Region editing.
+- Kept scientific previews fit to the complete image field and reserved Ctrl+wheel for deliberate zoom, preventing ordinary page scrolling from cropping plots.
+- Split Cell Distribution into boundary-banded regions and cell density by boundary distance, with persistent multi-cell-type selection and the Apple-style density line plot.
+- Preserved distribution artifacts inside the output folder selected during restore, including when a saved project is copied or moved.
+- Expanded release gates for Region filtering/registry behavior, distribution preview/restore contracts, frozen SVG rendering, and the complete nine-stage workflow.
+
+## 1.2.2 - 2026-07-20 (Windows)
+
+- Reorganized the native Windows interface with a consistent typography scale, clearer section hierarchy, and more readable control spacing.
+- Improved cell-type rule editing with persistent multi-marker selection, clearer marker choices, and the segmented nucleus selected by default for each cell type's all-positive rule.
+- Improved automatic nucleus-channel selection for datasets that use nuclear marker names such as `Ir191_nuclei` instead of DAPI.
+- Matched the macOS cell-assignment parameter ranges, Local threshold option, and bounded fast-filter execution so saved Apple-compatible settings remain editable and practical to optimize on Windows.
+- Preserved and restored completed downstream analysis settings, including neighborhood, region, distribution, and both distance-analysis modes.
+- Expanded Windows workflow validation with packaged-engine, restore-state, and real-dataset coverage while leaving the macOS application unchanged.
+
+## 1.2.1 - 2026-07-19 (Windows)
+
+- Replaced the legacy Electron/Streamlit Windows shell with a native WPF/.NET desktop application and a private frozen analysis engine.
+- Distributed Windows as a self-contained setup executable; users do not need a browser, Node.js, Python, or the .NET SDK.
+- Fixed packaged Step 2 SVG generation by explicitly bundling and testing the Matplotlib Agg and SVG backends.
+- Added native input and output folder selection, bilingual interface text, live app CPU usage, parameter guidance, and sequential workflow status colors.
+- Verified the packaged engine with Step 2 and complete nine-stage smoke tests.
+- Replaced the earlier Electron-based Windows package with the native 1.2.1 installer.
+
+## 1.2.1 - 2026-07-19 (macOS)
 
 - Fixed the Simplified Chinese nuclei segmentation result message that could crash the app when a saved result was opened.
-- Added a compact SpatialScope menu bar item for showing the app, checking for updates, and quitting.
+- Added a compact SpatialQuant menu bar item for showing the app, checking for updates, and quitting.
 - Kept the workflow sidebar anchored while switching between analysis sections.
 
 ## 1.2 - 2026-07-18
@@ -34,7 +94,7 @@ All notable changes to SpatialScope are documented here.
 
 - Added an in-app language selector that follows macOS by default, with explicit English and Simplified Chinese choices.
 - Kept the language control label bilingual as `Language/语言` in every interface mode.
-- Kept the `SpatialScope` product name unchanged in both interface languages.
+- Kept the `SpatialQuant` product name unchanged in both interface languages.
 - Kept analysis methods, exported data, filenames, schemas, and generated figure text language-independent from the UI preference.
 - Fixed a launch-time crash caused by localized workflow status accessibility labels.
 - Fixed Cell Distribution reloads so region-mask files always come from the same saved analysis run.
@@ -42,7 +102,7 @@ All notable changes to SpatialScope are documented here.
 
 ## 1.0 - 2026-07-18
 
-- First public release under the SpatialScope name.
+- First public release of the native desktop application.
 - Native macOS workflow with nine analysis sections.
 - Universal Apple Silicon and Intel application bundle.
 - Self-contained Cell Distribution runtime.
@@ -53,7 +113,7 @@ All notable changes to SpatialScope are documented here.
 
 Earlier Streamlit-based development is preserved in the [TME Spatial repository](https://github.com/fengshuoliu/TME_spatial).
 ]]></description>
-            <enclosure url="https://github.com/fengshuoliu/SpatialScope/releases/download/v1.2.1/SpatialScope-macOS-universal.zip" length="134510942" type="application/octet-stream" sparkle:edSignature="eHav4b86y395ohSx9aV3WKbGolCkOv2USEQjASoa8yJagBMmF3yk6HxJMgZ2bjc+G28+9Dd3Y2FgZ/ptJ3E1BQ=="/>
+            <enclosure url="https://github.com/fengshuoliu/SpatialQuant/releases/download/v1.3.0/SpatialQuant-macOS-universal.zip" length="134510249" type="application/octet-stream" sparkle:edSignature="4qfsWnwp0S2kj3NJIVJ8QHEhwGKrdpkP8SblIOhvRoXw66iRiYMsh/I1prHCjiYGN1TnDowCajtYE5M5WX0DAw=="/>
         </item>
     </channel>
 </rss>

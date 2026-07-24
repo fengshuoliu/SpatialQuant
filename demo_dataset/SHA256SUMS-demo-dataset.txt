@@ -1,1 +1,1 @@
-5e40421fd6af23804e9ec3d22ce731c6f52162ca36df6bf5faa48329ce8afe6b  SpatialScope-Demo-Dataset-v1.0.zip
+4a9180b55c6eb4670081c3bdac4c1a5ce5e72b8e03d6bf6e2b43f946d3c8f1f3  SpatialQuant-Demo-Dataset-v1.0.zip

@@ -28,30 +28,30 @@ from cell_distribution_export import (  # noqa: E402
     run_cell_density_analysis,
     run_region_mask_band_analysis,
 )
-from src.spatialscope_analysis.celltype_assignment import (  # noqa: E402
+from src.spatialquant_analysis.celltype_assignment import (  # noqa: E402
     CelltypeAssignmentParams,
     run_celltype_assignment,
     run_celltype_assignment_parameter_sweep,
 )
-from src.spatialscope_analysis.distance_analysis import (  # noqa: E402
+from src.spatialquant_analysis.distance_analysis import (  # noqa: E402
     run_boundary_distance_analysis,
     run_nearest_neighbor_analysis,
 )
-from src.spatialscope_analysis.io import files_to_long_df, write_json, zip_directory_bytes  # noqa: E402
-from src.spatialscope_analysis.models import ChannelConfig, NucleiParams, PipelineConfig, RegionParams  # noqa: E402
-from src.spatialscope_analysis.neighborhood_analysis import (  # noqa: E402
+from src.spatialquant_analysis.io import files_to_long_df, write_json, zip_directory_bytes  # noqa: E402
+from src.spatialquant_analysis.models import ChannelConfig, NucleiParams, PipelineConfig, RegionParams  # noqa: E402
+from src.spatialquant_analysis.neighborhood_analysis import (  # noqa: E402
     run_neighborhood_analysis,
     save_neighborhood_analysis_outputs,
 )
-from src.spatialscope_analysis.nuclei_segmentation import (  # noqa: E402
+from src.spatialquant_analysis.nuclei_segmentation import (  # noqa: E402
     run_nuclei_parameter_sweep,
     run_nuclei_segmentation,
 )
-from src.spatialscope_analysis.region_analysis import (  # noqa: E402
+from src.spatialquant_analysis.region_analysis import (  # noqa: E402
     run_region_boundary_analysis,
     save_manual_roi_analysis,
 )
-from src.spatialscope_analysis.visualization import overlay_multi_channels, plot_split_channels  # noqa: E402
+from src.spatialquant_analysis.visualization import overlay_multi_channels, plot_split_channels  # noqa: E402
 
 
 IMAGE_SIZE = 128
@@ -161,7 +161,7 @@ def run_smoke(output_root: Path) -> dict[str, Any]:
     if output_root.exists():
         shutil.rmtree(output_root)
     input_dir = output_root / "synthetic_input"
-    output_dir = output_root / "SpatialScope_outputs"
+    output_dir = output_root / "SpatialQuant_outputs"
     input_dir.mkdir(parents=True)
     output_dir.mkdir(parents=True)
 
@@ -484,7 +484,7 @@ def run_smoke(output_root: Path) -> dict[str, Any]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Run every SpatialScope analysis stage on synthetic data.")
+    parser = argparse.ArgumentParser(description="Run every SpatialQuant analysis stage on synthetic data.")
     parser.add_argument(
         "--output-root",
         type=Path,

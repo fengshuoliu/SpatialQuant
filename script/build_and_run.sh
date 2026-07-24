@@ -2,8 +2,8 @@
 set -euo pipefail
 
 MODE="${1:-run}"
-PROJECT_NAME="SpatialScope"
-SCHEME_NAME="SpatialScope"
+PROJECT_NAME="SpatialQuant"
+SCHEME_NAME="SpatialQuant"
 CONFIGURATION="${CONFIGURATION:-Debug}"
 DESTINATION="${DESTINATION:-platform=macOS}"
 

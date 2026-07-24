@@ -18,7 +18,7 @@ BACKEND_SRC = Path(__file__).resolve().parents[1] / "backend" / "src"
 if str(BACKEND_SRC) not in sys.path:
     sys.path.insert(0, str(BACKEND_SRC))
 
-from spatialscope_analysis.neighborhood_analysis import (
+from spatialquant_analysis.neighborhood_analysis import (
     make_neighborhood_figure,
     save_neighborhood_analysis_outputs,
     run_neighborhood_analysis,
@@ -62,7 +62,7 @@ class NeighborhoodOutputTests(unittest.TestCase):
         result = self._analysis_result()
         colors = {"A": "#112233", "B": "#445566", "A + B": "#778899"}
 
-        with tempfile.TemporaryDirectory(prefix="spatialscope-neighborhood-") as value:
+        with tempfile.TemporaryDirectory(prefix="spatialquant-neighborhood-") as value:
             output_dir = Path(value)
 
             def create_render_placeholder(_figure, filename, *args, **kwargs):

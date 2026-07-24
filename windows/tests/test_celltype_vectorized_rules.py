@@ -14,7 +14,7 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 from native_engine import NativeEngine  # noqa: E402
-from src.spatialscope_analysis.celltype_assignment import (  # noqa: E402
+from src.spatialquant_analysis.celltype_assignment import (  # noqa: E402
     NUC_KEY,
     _classify_simple_celltypes_vectorized,
     marker_name_to_key,

@@ -5,8 +5,8 @@ from pathlib import Path
 
 # Mirror notebook Cell 1 before importing numpy/scipy/skimage/numba.
 CPU_COUNT = os.cpu_count() or 4
-DEFAULT_NATIVE_THREADS = max(1, int(os.environ.get("SPATIALSCOPE_NATIVE_THREADS", str(max(1, CPU_COUNT - 1)))))
-DEFAULT_SWEEP_WORKERS = max(1, min(CPU_COUNT, int(os.environ.get("SPATIALSCOPE_SWEEP_WORKERS", str(max(1, CPU_COUNT - 1))))))
+DEFAULT_NATIVE_THREADS = max(1, int(os.environ.get("SPATIALQUANT_NATIVE_THREADS", str(max(1, CPU_COUNT - 1)))))
+DEFAULT_SWEEP_WORKERS = max(1, min(CPU_COUNT, int(os.environ.get("SPATIALQUANT_SWEEP_WORKERS", str(max(1, CPU_COUNT - 1))))))
 N_THREADS = DEFAULT_NATIVE_THREADS
 os.environ.setdefault("NUMBA_THREADING_LAYER", "workqueue")
 os.environ.setdefault("OMP_NUM_THREADS", str(N_THREADS))
@@ -37,24 +37,24 @@ from typing import Any, Dict, List, Sequence, Tuple
 import streamlit as st
 
 APP_ROOT = Path(__file__).resolve().parent
-APP_ICON_PATH = APP_ROOT / "assets" / "SpatialScope.png"
+APP_ICON_PATH = APP_ROOT / "assets" / "SpatialQuant.png"
 ZH_HANS_STRINGS_PATH = APP_ROOT / "assets" / "zh-Hans.strings"
 st.set_page_config(
-    page_title="SpatialScope",
+    page_title="SpatialQuant",
     page_icon=str(APP_ICON_PATH) if APP_ICON_PATH.exists() else None,
     layout="wide",
     initial_sidebar_state="expanded",
 )
-TMP_ROOT = Path(os.environ.get("SPATIALSCOPE_SESSION_ROOT", tempfile.gettempdir())) / "SpatialScope" / "sessions"
+TMP_ROOT = Path(os.environ.get("SPATIALQUANT_SESSION_ROOT", tempfile.gettempdir())) / "SpatialQuant" / "sessions"
 SETTINGS_PATH = Path(
     os.environ.get(
-        "SPATIALSCOPE_SETTINGS_PATH",
-        str(Path.home() / ".spatialscope" / "settings.json"),
+        "SPATIALQUANT_SETTINGS_PATH",
+        str(Path.home() / ".spatialquant" / "settings.json"),
     )
 )
 DESKTOP_PATHS_PATH = Path(
     os.environ.get(
-        "SPATIALSCOPE_DESKTOP_PATHS_PATH",
+        "SPATIALQUANT_DESKTOP_PATHS_PATH",
         str(SETTINGS_PATH.with_name("desktop-paths.json")),
     )
 )
@@ -81,7 +81,7 @@ RUNTIME_IMPORT_TRACEBACK = ""
 
 
 def _load_ui_language_setting() -> str:
-    requested = os.environ.get("SPATIALSCOPE_UI_LANGUAGE", "system").strip().lower()
+    requested = os.environ.get("SPATIALQUANT_UI_LANGUAGE", "system").strip().lower()
     try:
         if SETTINGS_PATH.exists():
             payload = json.loads(SETTINGS_PATH.read_text(encoding="utf-8"))
@@ -108,7 +108,7 @@ _ZH_HANS_TRANSLATIONS: Dict[str, str] | None = None
 def _effective_ui_language() -> str:
     requested = str(st.session_state.get("ui_language", "system")).strip().lower()
     if requested == "system":
-        requested = os.environ.get("SPATIALSCOPE_SYSTEM_LANGUAGE", "en").strip().lower()
+        requested = os.environ.get("SPATIALQUANT_SYSTEM_LANGUAGE", "en").strip().lower()
     return "zh-hans" if requested == "zh-hans" else "en"
 
 
@@ -227,8 +227,8 @@ def inject_ui_translation() -> None:
               }}
             }};
 
-            if (hostWindow.__spatialScopeTranslationObserver) {{
-              hostWindow.__spatialScopeTranslationObserver.disconnect();
+            if (hostWindow.__spatialQuantTranslationObserver) {{
+              hostWindow.__spatialQuantTranslationObserver.disconnect();
             }}
             apply(doc.body);
             const observer = new MutationObserver((mutations) => {{
@@ -238,9 +238,9 @@ def inject_ui_translation() -> None:
               }}
             }});
             observer.observe(doc.body, {{ childList: true, subtree: true, characterData: true }});
-            hostWindow.__spatialScopeTranslationObserver = observer;
+            hostWindow.__spatialQuantTranslationObserver = observer;
           }} catch (error) {{
-            console.warn("SpatialScope UI translation could not be applied", error);
+            console.warn("SpatialQuant UI translation could not be applied", error);
           }}
         }})();
         </script>
@@ -503,7 +503,7 @@ try:
 
     st_canvas, DRAWABLE_CANVAS_ERROR = _load_st_canvas_component()
 
-    from src.spatialscope_analysis.celltype_assignment import (
+    from src.spatialquant_analysis.celltype_assignment import (
         CELLTYPE_PARAM_LABELS,
         CELLTYPE_PARAM_ORDER,
         CELLTYPE_OPTIMIZER_PARAM_LABELS,
@@ -521,12 +521,12 @@ try:
         save_celltype_config,
         token_mapping_for_ui,
     )
-    from src.spatialscope_analysis.distance_analysis import (
+    from src.spatialquant_analysis.distance_analysis import (
         discover_boundary_masks,
         run_boundary_distance_analysis,
         run_nearest_neighbor_analysis,
     )
-    from src.spatialscope_analysis.io import (
+    from src.spatialquant_analysis.io import (
         discover_text_image_files,
         files_to_long_df,
         list_output_files,
@@ -539,8 +539,8 @@ try:
         zip_directory_bytes,
         load_any_tiff,
     )
-    from src.spatialscope_analysis.models import ChannelConfig, NucleiParams, PipelineConfig, RegionParams
-    from src.spatialscope_analysis.nuclei_segmentation import (
+    from src.spatialquant_analysis.models import ChannelConfig, NucleiParams, PipelineConfig, RegionParams
+    from src.spatialquant_analysis.nuclei_segmentation import (
         SWEEP_PARAM_LABELS,
         SWEEP_PARAM_ORDER,
         pick_nucleus_channel,
@@ -549,7 +549,7 @@ try:
         run_nuclei_parameter_sweep,
         run_nuclei_segmentation,
     )
-    from src.spatialscope_analysis.region_analysis import (
+    from src.spatialquant_analysis.region_analysis import (
         apply_boundary_edit_to_mask,
         discover_boundary_mask_files,
         make_celltype_mask_rgb,
@@ -560,20 +560,20 @@ try:
         save_adjusted_region_analysis,
         save_manual_roi_analysis,
     )
-    from src.spatialscope_analysis.neighborhood_analysis import (
+    from src.spatialquant_analysis.neighborhood_analysis import (
         make_neighborhood_figure,
         run_neighborhood_analysis,
         save_neighborhood_analysis_outputs,
     )
-    from src.spatialscope_analysis.visualization import COMMON_FIRST, overlay_multi_channels, plot_split_channels
+    from src.spatialquant_analysis.visualization import COMMON_FIRST, overlay_multi_channels, plot_split_channels
 except Exception as exc:  # pragma: no cover - UI fallback for broken local envs
     RUNTIME_IMPORT_ERROR = exc
     RUNTIME_IMPORT_TRACEBACK = traceback.format_exc()
 
 if RUNTIME_IMPORT_ERROR is not None:
-    st.title("SpatialScope analysis pipeline")
+    st.title("SpatialQuant analysis pipeline")
     st.error(
-        "SpatialScope could not start its bundled scientific runtime. "
+        "SpatialQuant could not start its bundled scientific runtime. "
         "Reinstall the current Windows release, then restart the application."
     )
     with st.expander("Show original import traceback"):
@@ -775,7 +775,7 @@ def invalidate_output_zip_cache() -> None:
 def current_output_zip_path(output_signature: str | None = None) -> Path:
     signature = (output_signature or "nosignature").encode("utf-8")
     short_hash = hashlib.sha256(signature).hexdigest()[:12]
-    return session_workspace_root() / f"SpatialScope_outputs_{st.session_state['session_id']}_{short_hash}.zip"
+    return session_workspace_root() / f"SpatialQuant_outputs_{st.session_state['session_id']}_{short_hash}.zip"
 
 
 def prepare_output_zip_file(folder_path: Path, zip_path: Path) -> Path:
@@ -2182,7 +2182,7 @@ def _render_integrated_region_selection_ui(
     }
     overlay_rgb = None
     if selected_mask_labels and selected_celltypes and selected_masks:
-        from src.spatialscope_analysis.region_analysis import make_roi_comparison_figure
+        from src.spatialquant_analysis.region_analysis import make_roi_comparison_figure
 
         overlay_rgb = _build_overlay_rgb_for_region_ui(config, data_result)
         preview_figure = make_roi_comparison_figure(
@@ -2250,7 +2250,7 @@ def _render_integrated_region_selection_ui(
             original_saved_paths = None
             original_exported_labels = list(original_masks.keys())
             if original_masks:
-                from src.spatialscope_analysis.region_analysis import make_roi_comparison_figure
+                from src.spatialquant_analysis.region_analysis import make_roi_comparison_figure
 
                 original_figure = make_roi_comparison_figure(
                     overlay_rgb=overlay_rgb,
@@ -5368,7 +5368,7 @@ def build_and_save_config(available_files: Sequence[str], uploaded_files) -> Non
         if not folder.is_dir():
             raise RuntimeError(f"Input folder does not exist: {folder}")
         output_value = str(st.session_state.get("local_output_folder", "")).strip()
-        save_dir = resolve_folder(output_value) if output_value else folder / "SpatialScope_outputs"
+        save_dir = resolve_folder(output_value) if output_value else folder / "SpatialQuant_outputs"
         save_dir.mkdir(parents=True, exist_ok=True)
         config_input_mode = "local"
 
@@ -5634,7 +5634,7 @@ def render_sidebar_navigation() -> str:
     statuses = _section_statuses(section_labels)
 
     with st.sidebar:
-        st.markdown("## SpatialScope")
+        st.markdown("## SpatialQuant")
         language_options = ["system", "en", "zh-hans"]
         st.selectbox(
             "Language/语言",
@@ -5652,7 +5652,7 @@ def render_sidebar_navigation() -> str:
             st.write(f"CPU count: {CPU_COUNT}")
             st.write(f"Default native thread pool: {os.environ.get('OMP_NUM_THREADS')}")
             st.info(
-                "SpatialScope can read a local folder or uploaded ImageJ-exported CSV/TXT files. "
+                "SpatialQuant can read a local folder or uploaded ImageJ-exported CSV/TXT files. "
                 "Local-folder results are written to the selected output folder."
             )
             if st.button("Reset session", type="secondary", key="reset_session_sidebar_btn"):
@@ -5703,12 +5703,12 @@ def render_config_tab(tab):
             st.text_input(
                 "Input folder",
                 key="local_folder_input",
-                placeholder=r"C:\Data\SpatialScope\channels",
+                placeholder=r"C:\Data\SpatialQuant\channels",
             )
             st.text_input(
                 "Output folder",
                 key="local_output_folder",
-                placeholder=r"C:\Data\SpatialScope\results",
+                placeholder=r"C:\Data\SpatialQuant\results",
             )
             st.caption("Use File > Choose Input Folder or Choose Output Folder for the native Windows folder picker.")
             folder_value = str(st.session_state.get("local_folder_input", "")).strip()
@@ -7470,7 +7470,7 @@ def render_outputs_tab(tab):
             st.download_button(
                 "Download current outputs as ZIP",
                 data=zip_bytes,
-                file_name=f"SpatialScope_outputs_{st.session_state['session_id']}.zip",
+                file_name=f"SpatialQuant_outputs_{st.session_state['session_id']}.zip",
                 mime="application/zip",
                 key="download_outputs_zip_btn",
             )
@@ -7483,7 +7483,7 @@ def render_outputs_tab(tab):
 
 def render_app_page_header() -> None:
     if not APP_ICON_PATH.exists():
-        st.title("SpatialScope")
+        st.title("SpatialQuant")
         return
 
     try:
@@ -7492,13 +7492,13 @@ def render_app_page_header() -> None:
             f"""
             <div style="display:flex;align-items:center;gap:14px;margin-bottom:0.65rem;position:relative;z-index:1;">
               <img src="data:image/png;base64,{icon_b64}" style="width:52px;height:52px;display:block;object-fit:contain;" />
-              <div style="font-size:2rem;font-weight:700;line-height:1.1;letter-spacing:0;">SpatialScope</div>
+              <div style="font-size:2rem;font-weight:700;line-height:1.1;letter-spacing:0;">SpatialQuant</div>
             </div>
             """,
             unsafe_allow_html=True,
         )
     except Exception:
-        st.title("SpatialScope")
+        st.title("SpatialQuant")
 
 
 def main():

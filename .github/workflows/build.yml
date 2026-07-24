@@ -11,12 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Resolve packages
-        run: xcodebuild -resolvePackageDependencies -project SpatialScope.xcodeproj -scheme SpatialScope
+        run: xcodebuild -resolvePackageDependencies -project SpatialQuant.xcodeproj -scheme SpatialQuant
       - name: Build release configuration
         run: >-
           xcodebuild
-          -project SpatialScope.xcodeproj
-          -scheme SpatialScope
+          -project SpatialQuant.xcodeproj
+          -scheme SpatialQuant
           -configuration Release
           -destination 'generic/platform=macOS'
           CODE_SIGNING_ALLOWED=NO

@@ -23,7 +23,7 @@ from native_engine import (  # noqa: E402
     NativeEngine,
     _normalize_assignment_parameters,
 )
-from src.spatialscope_analysis.celltype_assignment import (  # noqa: E402
+from src.spatialquant_analysis.celltype_assignment import (  # noqa: E402
     CelltypeAssignmentParams,
     MAX_ASSIGNMENT_SMOOTHING_RADIUS_PX,
     MAX_ASSIGNMENT_TOPHAT_RADIUS_PX,
@@ -34,7 +34,7 @@ from src.spatialscope_analysis.celltype_assignment import (  # noqa: E402
     _preprocess_assignment_marker,
     _truncated_box_blur,
 )
-from src.spatialscope_analysis.models import PipelineConfig  # noqa: E402
+from src.spatialquant_analysis.models import PipelineConfig  # noqa: E402
 
 
 class AssignmentParameterParityTests(unittest.TestCase):
@@ -73,7 +73,7 @@ class AssignmentParameterParityTests(unittest.TestCase):
             WINDOWS_DIR
             / "native"
             / "src"
-            / "SpatialScope.App"
+            / "SpatialQuant.App"
             / "Models"
             / "ParameterDefinition.cs"
         ).read_text(encoding="utf-8")
@@ -119,7 +119,7 @@ class AssignmentParameterParityTests(unittest.TestCase):
 
     def test_wpf_threshold_picker_displays_local_and_retains_triangle(self) -> None:
         source = (
-            WINDOWS_DIR / "native" / "src" / "SpatialScope.App" / "MainWindow.xaml.cs"
+            WINDOWS_DIR / "native" / "src" / "SpatialQuant.App" / "MainWindow.xaml.cs"
         ).read_text(encoding="utf-8")
         self.assertIn('Content = "Local", Tag = "local"', source)
         self.assertIn('"local" => 1', source)
@@ -127,7 +127,7 @@ class AssignmentParameterParityTests(unittest.TestCase):
 
     def test_wpf_reviews_and_applies_canonical_assignment_recommendation(self) -> None:
         source = (
-            WINDOWS_DIR / "native" / "src" / "SpatialScope.App" / "MainWindow.xaml.cs"
+            WINDOWS_DIR / "native" / "src" / "SpatialQuant.App" / "MainWindow.xaml.cs"
         ).read_text(encoding="utf-8")
         self.assertIn('AutomationProperties.SetAutomationId(content, "AssignmentSuggestedComboReview")', source)
         self.assertIn('_localization["AssignmentSuggestionScore"]', source)
@@ -168,7 +168,7 @@ class AssignmentParameterParityTests(unittest.TestCase):
         self.assertLess(invalidate, execute)
         self.assertLess(execute, publish)
 
-        with tempfile.TemporaryDirectory(prefix="spatialscope-assignment-rerun-") as temporary:
+        with tempfile.TemporaryDirectory(prefix="spatialquant-assignment-rerun-") as temporary:
             root = Path(temporary)
             engine = NativeEngine()
             engine.config = PipelineConfig(
@@ -306,7 +306,7 @@ class AssignmentParameterParityTests(unittest.TestCase):
             return np.asarray(values, dtype=np.float64)
 
         with patch(
-            "src.spatialscope_analysis.celltype_assignment._truncated_box_blur",
+            "src.spatialquant_analysis.celltype_assignment._truncated_box_blur",
             side_effect=record_blur,
         ):
             _preprocess_assignment_marker(image, 10_000, 10_000)

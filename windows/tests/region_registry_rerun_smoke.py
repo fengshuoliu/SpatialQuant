@@ -17,8 +17,8 @@ BACKEND_SRC = WINDOWS_DIR / "backend" / "src"
 if str(BACKEND_SRC) not in sys.path:
     sys.path.insert(0, str(BACKEND_SRC))
 
-from spatialscope_analysis.models import RegionParams
-from spatialscope_analysis.region_analysis import run_region_boundary_analysis
+from spatialquant_analysis.models import RegionParams
+from spatialquant_analysis.region_analysis import run_region_boundary_analysis
 
 
 REGISTRY_NAME = "boundary_mask_registry.json"
@@ -80,7 +80,7 @@ def run_smoke() -> dict[str, Any]:
         ]
     )
 
-    with tempfile.TemporaryDirectory(prefix="spatialscope-region-registry-") as temp_dir:
+    with tempfile.TemporaryDirectory(prefix="spatialquant-region-registry-") as temp_dir:
         output_folder = Path(temp_dir)
         _run_analysis(output_folder, df_cells, celltype_mask, celltype_config, ["Type A", "Type B"])
 

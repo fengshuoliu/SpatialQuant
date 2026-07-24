@@ -11,9 +11,9 @@ BACKEND_DIR = Path(__file__).resolve().parents[1] / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from src.spatialscope_analysis.compute_runtime import ComputeRuntime, set_compute_runtime  # noqa: E402
-from src.spatialscope_analysis.models import NucleiParams  # noqa: E402
-from src.spatialscope_analysis.nuclei_segmentation import (  # noqa: E402
+from src.spatialquant_analysis.compute_runtime import ComputeRuntime, set_compute_runtime  # noqa: E402
+from src.spatialquant_analysis.models import NucleiParams  # noqa: E402
+from src.spatialquant_analysis.nuclei_segmentation import (  # noqa: E402
     SWEEP_PARAM_ORDER,
     _evaluate_explicit_combo_records,
     _evaluate_sweep_combo_chunk,

@@ -1,21 +1,21 @@
-# SpatialScope for Windows
+# SpatialQuant for Windows
 
-SpatialScope 1.2.6 is a native Windows desktop application. Its interface is WPF/.NET, its analysis engine runs as a private local process, and it does not use Streamlit or a browser.
+SpatialQuant 1.3.0 is a native Windows desktop application. Its interface is WPF/.NET, its analysis engine runs as a private local process, and it does not use Streamlit or a browser.
 
 ## Architecture
 
-- `native/src/SpatialScope.App/` is the Windows WPF application and native folder-picker UI.
-- `native/src/SpatialScope.Updater/` isolates stable-channel discovery, download, and verification from the scientific workflow.
-- `native/tests/SpatialScope.Updater.ContractTests/` exercises the updater without a real network request or installer launch.
+- `native/src/SpatialQuant.App/` is the Windows WPF application and native folder-picker UI.
+- `native/src/SpatialQuant.Updater/` isolates stable-channel discovery, download, and verification from the scientific workflow.
+- `native/tests/SpatialQuant.Updater.ContractTests/` exercises the updater without a real network request or installer launch.
 - `backend/native_engine.py` exposes the scientific workflows over a compact JSON-lines protocol.
-- `backend/src/spatialscope_analysis/compute_runtime.py` schedules exact array work across every logical CPU and every compatible OpenCL GPU, with automatic CPU fallback.
-- `backend/SpatialScopeEngine.spec` freezes the engine with both Matplotlib Agg and SVG backends.
+- `backend/src/spatialquant_analysis/compute_runtime.py` schedules exact array work across every logical CPU and every compatible OpenCL GPU, with automatic CPU fallback.
+- `backend/SpatialQuantEngine.spec` freezes the engine with both Matplotlib Agg and SVG backends.
 - `tests/native_overlay_smoke.py` reproduces configuration through Composite Preview (Step 2).
 - `tests/native_engine_smoke.py` exercises the complete nine-step workflow.
 - `run_native.ps1` prepares and runs the source application for local development.
 - `build_native.ps1` produces the self-contained Windows setup program.
 
-The previous Electron/Streamlit implementation remains in `desktop/` and `backend/app.py` for compatibility and reference only. It is not used by the native 1.2.6 installer.
+The previous Electron/Streamlit implementation remains in `desktop/` and `backend/app.py` for compatibility and reference only. It is not used by the native 1.3.0 installer.
 
 ## Test and adjust locally
 
@@ -24,7 +24,7 @@ Visual Studio Community is the closest Windows equivalent to Xcode. Install the 
 Open this project in Visual Studio:
 
 ```text
-windows/native/src/SpatialScope.App/SpatialScope.App.csproj
+windows/native/src/SpatialQuant.App/SpatialQuant.App.csproj
 ```
 
 First prepare the isolated Python environment:
@@ -41,7 +41,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\windows\run_native.ps1
 
 The source application automatically starts `windows/backend/native_engine.py` from the isolated environment. Input and output path fields open the native Windows folder browser when clicked.
 
-SpatialScope probes real OpenCL compute devices instead of treating display-adapter names as proof of GPU support. In the default `auto` mode, every compatible Intel, NVIDIA, or AMD OpenCL GPU receives returned workflow work alongside all logical CPU lanes. Each CPU lane has a persistent worker thread, and request telemetry counts a worker only after that thread completes output used by the workflow. The header reports the backend and GPU count; hover it to see exact device names. If OpenCL is missing or a device fails, the same operations fall back to the CPU and the engine records the reason in request telemetry.
+SpatialQuant probes real OpenCL compute devices instead of treating display-adapter names as proof of GPU support. In the default `auto` mode, every compatible Intel, NVIDIA, or AMD OpenCL GPU receives returned workflow work alongside all logical CPU lanes. Each CPU lane has a persistent worker thread, and request telemetry counts a worker only after that thread completes output used by the workflow. The header reports the backend and GPU count; hover it to see exact device names. If OpenCL is missing or a device fails, the same operations fall back to the CPU and the engine records the reason in request telemetry.
 
 Run the source renderer, WPF build, and complete nine-step scientific smoke test with:
 
@@ -71,15 +71,15 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\windows\build_native.p
 
 Once dependencies are already installed, add `-SkipDependencies` to save time. The build checks the frozen Matplotlib renderer and runs Step 2 against the frozen engine. `-FullSmoke` runs all nine workflow stages; adding `-RequireGpuParity` also runs exact CPU-versus-required-OpenCL parity against the staged frozen engine, so that release-only gate requires a compatible OpenCL GPU. GPU-less CI can retain the complete CPU workflow smoke by using `-FullSmoke` alone. The build then writes:
 
-- `native/dist/SpatialScope-Windows-x64-Setup.exe`
+- `native/dist/SpatialQuant-Windows-x64-Setup.exe`
 - `native/dist/SHA256SUMS-Windows.txt`
 
-Run the setup program and launch SpatialScope from the Start menu or desktop shortcut. Python, PyOpenCL, Node.js, Electron, Streamlit, and the .NET SDK are not required on the test machine; the private engine and OpenCL binding are bundled. A compatible graphics driver is still required for GPU execution. The installer is currently unsigned, so Windows SmartScreen may require **More info > Run anyway** the first time.
+Run the setup program and launch SpatialQuant from the Start menu or desktop shortcut. Python, PyOpenCL, Node.js, Electron, Streamlit, and the .NET SDK are not required on the test machine; the private engine and OpenCL binding are bundled. A compatible graphics driver is still required for GPU execution. The installer is currently unsigned, so Windows SmartScreen may require **More info > Run anyway** the first time.
 
-The native 1.2.6 build explicitly bundles and smoke-tests `matplotlib.backends.backend_svg`, which Step 2 uses when it saves SVG files.
+The native 1.3.0 build explicitly bundles and smoke-tests `matplotlib.backends.backend_svg`, which Step 2 uses when it saves SVG files.
 
 ## Windows updates
 
-SpatialScope 1.2.5 and later check the stable Windows channel on GitHub once every 24 hours. The sidebar also provides **Check for updates** at any time. An update is offered only when a newer stable `windows-v<version>` release contains exactly one uploaded setup program and checksum file with the expected names. SpatialScope validates GitHub's asset digest, the checksum manifest, declared size, and trusted HTTPS location before it starts the installer.
+SpatialQuant 1.3.0 and later check the stable Windows channel on GitHub once every 24 hours. The sidebar also provides **Check for updates** at any time. An update is offered only when a newer stable `windows-v<version>` release contains exactly one uploaded setup program and checksum file with the expected names. SpatialQuant validates GitHub's asset digest, the checksum manifest, declared size, and trusted HTTPS location before it starts the installer.
 
-After the user approves an update, the app downloads it, closes the private analysis engine cleanly, installs into the existing installer-owned directory, and reopens automatically. A single-instance mutex prevents another running copy from being overwritten, and moved or unregistered copies stay open and direct the user to the stable Windows download page. Update checks never change workflow completion state, and installation is unavailable while an analysis is running. Versions 1.2.4 and earlier require one final manual installation of 1.2.5 before automatic updating is available.
+After the user approves an update, the app downloads it, closes the private analysis engine cleanly, installs into the existing installer-owned directory, and reopens automatically. A single-instance mutex prevents another running copy from being overwritten, and moved or unregistered copies stay open and direct the user to the stable Windows download page. Update checks never change workflow completion state, and installation is unavailable while an analysis is running. Builds published before 1.3.0 require one manual SpatialQuant installation before automatic updating is available.

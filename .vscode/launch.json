@@ -2,11 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "SpatialScope Windows (native)",
+      "name": "SpatialQuant Windows (native)",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "SpatialScope: Build Native Windows",
-      "program": "${workspaceFolder}\\windows\\native\\src\\SpatialScope.App\\bin\\Debug\\net10.0-windows\\SpatialScope.exe",
+      "preLaunchTask": "SpatialQuant: Build Native Windows",
+      "program": "${workspaceFolder}\\windows\\native\\src\\SpatialQuant.App\\bin\\Debug\\net10.0-windows\\SpatialQuant.exe",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "stopAtEntry": false

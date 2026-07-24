@@ -53,7 +53,7 @@ from cell_distribution_export import (  # noqa: E402
     run_cell_density_analysis,
     run_region_mask_band_analysis,
 )
-from src.spatialscope_analysis.celltype_assignment import (  # noqa: E402
+from src.spatialquant_analysis.celltype_assignment import (  # noqa: E402
     CELLTYPE_OPTIMIZER_PARAM_ORDER,
     CELLTYPE_OPTIMIZER_PARAM_LABELS,
     COLOR_HEX_LIST,
@@ -65,16 +65,16 @@ from src.spatialscope_analysis.celltype_assignment import (  # noqa: E402
     save_celltype_config,
     validate_celltype_config_names,
 )
-from src.spatialscope_analysis.compute_runtime import (  # noqa: E402
+from src.spatialquant_analysis.compute_runtime import (  # noqa: E402
     ComputeRuntime,
     select_workflow_parallel_backend,
     set_compute_runtime,
 )
-from src.spatialscope_analysis.distance_analysis import (  # noqa: E402
+from src.spatialquant_analysis.distance_analysis import (  # noqa: E402
     run_boundary_distance_analysis,
     run_nearest_neighbor_analysis,
 )
-from src.spatialscope_analysis.io import (  # noqa: E402
+from src.spatialquant_analysis.io import (  # noqa: E402
     discover_text_image_files,
     files_to_long_df,
     list_output_files,
@@ -82,27 +82,27 @@ from src.spatialscope_analysis.io import (  # noqa: E402
     safe_name,
     write_json,
 )
-from src.spatialscope_analysis.models import (  # noqa: E402
+from src.spatialquant_analysis.models import (  # noqa: E402
     ChannelConfig,
     NucleiParams,
     PipelineConfig,
     RegionParams,
 )
-from src.spatialscope_analysis.neighborhood_analysis import (  # noqa: E402
+from src.spatialquant_analysis.neighborhood_analysis import (  # noqa: E402
     run_neighborhood_analysis,
     save_neighborhood_analysis_outputs,
 )
-from src.spatialscope_analysis.optimizer_fixed_parameters import (  # noqa: E402
+from src.spatialquant_analysis.optimizer_fixed_parameters import (  # noqa: E402
     apply_assignment_fixed_parameter_keys,
     apply_nuclei_fixed_parameter_keys,
 )
-from src.spatialscope_analysis.nuclei_segmentation import (  # noqa: E402
+from src.spatialquant_analysis.nuclei_segmentation import (  # noqa: E402
     SWEEP_PARAM_LABELS,
     recommend_nuclei_parameter_sweep_result,
     run_nuclei_parameter_optimizer,
     run_nuclei_segmentation,
 )
-from src.spatialscope_analysis.region_analysis import (  # noqa: E402
+from src.spatialquant_analysis.region_analysis import (  # noqa: E402
     build_region_mask_from_cell_labels,
     draw_region_boundaries_rgb,
     make_region_canvas_rgb,
@@ -110,7 +110,7 @@ from src.spatialscope_analysis.region_analysis import (  # noqa: E402
     save_adjusted_region_analysis,
     um_to_px_iso,
 )
-from src.spatialscope_analysis.visualization import (  # noqa: E402
+from src.spatialquant_analysis.visualization import (  # noqa: E402
     generate_distinct_hex,
     overlay_multi_channels,
     plot_split_channels,
@@ -118,7 +118,7 @@ from src.spatialscope_analysis.visualization import (  # noqa: E402
 
 
 PROTOCOL_VERSION = 1
-ENGINE_VERSION = "1.2.6"
+ENGINE_VERSION = "1.3.0"
 PROTOCOL_STDOUT = sys.stdout
 
 REGION_CONTOUR_DOWNSAMPLES = (1, 2, 4, 8)
@@ -523,9 +523,9 @@ def _distribution_config_for_output(output_folder: Path):
 
 class NativeEngine:
     def __init__(self, compute_runtime: ComputeRuntime | None = None) -> None:
-        gpu_mode = str(os.environ.get("SPATIALSCOPE_GPU_MODE", "auto")).strip().lower()
+        gpu_mode = str(os.environ.get("SPATIALQUANT_GPU_MODE", "auto")).strip().lower()
         gpu_enabled = gpu_mode not in {"0", "false", "off", "cpu", "disabled"}
-        parity_mode = str(os.environ.get("SPATIALSCOPE_GPU_PARITY_MODE", "off")).strip().lower()
+        parity_mode = str(os.environ.get("SPATIALQUANT_GPU_PARITY_MODE", "off")).strip().lower()
         existing_runtime = getattr(self, "compute_runtime", None)
         self.compute_runtime = compute_runtime or existing_runtime or ComputeRuntime(
             cpu_workers=CPU_COUNT,
@@ -1118,7 +1118,7 @@ class NativeEngine:
         if not config_path.is_file():
             return {"restored": False, "outputFolder": str(output_folder)}
 
-        _progress(request_id, 0.08, "Reading saved SpatialScope configuration")
+        _progress(request_id, 0.08, "Reading saved SpatialQuant configuration")
         saved = json.loads(config_path.read_text(encoding="utf-8"))
         if not isinstance(saved, dict):
             raise ValueError("The saved pipeline configuration is invalid.")
@@ -1555,7 +1555,7 @@ class NativeEngine:
             for record in _artifact_manifest(output_folder)
             if self._output_record_is_current(str(record.get("relativePath") or ""))
         ]
-        _progress(request_id, 1.0, "Saved SpatialScope results restored")
+        _progress(request_id, 1.0, "Saved SpatialQuant results restored")
         if self.assignment_result is not None:
             restored_height, restored_width = (int(value) for value in self.assignment_result["celltype_mask"].shape)
         else:
@@ -3997,7 +3997,7 @@ def run_backend_smoke_test() -> Dict[str, Any]:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="SpatialScope native Windows analysis engine")
+    parser = argparse.ArgumentParser(description="SpatialQuant native Windows analysis engine")
     parser.add_argument("--json-lines", action="store_true", help="Read JSON requests from stdin and write JSON events to stdout.")
     parser.add_argument("--smoke-test", action="store_true")
     args = parser.parse_args()

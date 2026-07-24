@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "SpatialScope: Setup Native Windows",
+      "label": "SpatialQuant: Setup Native Windows",
       "type": "shell",
       "command": "powershell",
       "args": [
@@ -16,28 +16,28 @@
       "problemMatcher": []
     },
     {
-      "label": "SpatialScope: Compile Native Windows",
+      "label": "SpatialQuant: Compile Native Windows",
       "type": "process",
       "command": "dotnet",
       "args": [
         "build",
-        "${workspaceFolder}\\windows\\native\\src\\SpatialScope.App\\SpatialScope.App.csproj",
+        "${workspaceFolder}\\windows\\native\\src\\SpatialQuant.App\\SpatialQuant.App.csproj",
         "--configuration",
         "Debug"
       ],
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "SpatialScope: Build Native Windows",
+      "label": "SpatialQuant: Build Native Windows",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "SpatialScope: Setup Native Windows",
-        "SpatialScope: Compile Native Windows"
+        "SpatialQuant: Setup Native Windows",
+        "SpatialQuant: Compile Native Windows"
       ],
       "problemMatcher": []
     },
     {
-      "label": "SpatialScope: Run Native Windows App",
+      "label": "SpatialQuant: Run Native Windows App",
       "type": "shell",
       "command": "powershell",
       "args": [
@@ -51,7 +51,7 @@
       "problemMatcher": []
     },
     {
-      "label": "SpatialScope: Test Native Windows",
+      "label": "SpatialQuant: Test Native Windows",
       "type": "shell",
       "command": "powershell",
       "args": [
@@ -65,7 +65,7 @@
       "problemMatcher": []
     },
     {
-      "label": "SpatialScope: Build Native Windows Release",
+      "label": "SpatialQuant: Build Native Windows Release",
       "type": "shell",
       "command": "powershell",
       "args": [

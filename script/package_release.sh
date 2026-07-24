@@ -19,8 +19,8 @@ env -u AR -u AS -u CC -u CFLAGS -u CPP -u CPPFLAGS -u CXX -u CXXFLAGS \
     -u LD -u LDFLAGS -u LDFLAGS_LD -u LIPO -u NM -u OTOOL -u RANLIB \
     -u SDKROOT -u STRIP \
     /usr/bin/xcodebuild \
-    -project SpatialScope.xcodeproj \
-    -scheme SpatialScope \
+    -project SpatialQuant.xcodeproj \
+    -scheme SpatialQuant \
     -configuration "$CONFIGURATION" \
     -destination 'generic/platform=macOS' \
     -derivedDataPath "$DERIVED_DATA" \
@@ -30,10 +30,10 @@ env -u AR -u AS -u CC -u CFLAGS -u CPP -u CPPFLAGS -u CXX -u CXXFLAGS \
     ENABLE_HARDENED_RUNTIME=NO \
     build
 
-BUILT_APP="$DERIVED_DATA/Build/Products/$CONFIGURATION/SpatialScope.app"
+BUILT_APP="$DERIVED_DATA/Build/Products/$CONFIGURATION/SpatialQuant.app"
 VERSION="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$BUILT_APP/Contents/Info.plist")"
-WORK_DIR="$(mktemp -d "/tmp/spatialscope-package-$VERSION.XXXXXX")"
-APP="$WORK_DIR/SpatialScope.app"
+WORK_DIR="$(mktemp -d "/tmp/spatialquant-package-$VERSION.XXXXXX")"
+APP="$WORK_DIR/SpatialQuant.app"
 RELEASE_DIR="$ROOT_DIR/build/release/v$VERSION"
 
 mkdir -p "$RELEASE_DIR"
@@ -56,25 +56,25 @@ done < <(/usr/bin/find "$APP/Contents/Resources/CellDistributionRuntime" -type f
 /usr/bin/codesign --force --deep --sign - "$APP" >/dev/null
 /usr/bin/codesign --verify --deep --strict --verbose=2 "$APP"
 
-ARCHITECTURES="$(/usr/bin/lipo -archs "$APP/Contents/MacOS/SpatialScope")"
+ARCHITECTURES="$(/usr/bin/lipo -archs "$APP/Contents/MacOS/SpatialQuant")"
 if [[ "$ARCHITECTURES" != *arm64* || "$ARCHITECTURES" != *x86_64* ]]; then
     echo "Expected a universal app, found: $ARCHITECTURES" >&2
     exit 1
 fi
 
-ZIP_PATH="$RELEASE_DIR/SpatialScope-macOS-universal.zip"
-DMG_PATH="$RELEASE_DIR/SpatialScope-macOS-universal.dmg"
+ZIP_PATH="$RELEASE_DIR/SpatialQuant-macOS-universal.zip"
+DMG_PATH="$RELEASE_DIR/SpatialQuant-macOS-universal.dmg"
 DMG_STAGE="$WORK_DIR/dmg"
 mkdir -p "$DMG_STAGE"
-/usr/bin/ditto --noextattr --norsrc "$APP" "$DMG_STAGE/SpatialScope.app"
+/usr/bin/ditto --noextattr --norsrc "$APP" "$DMG_STAGE/SpatialQuant.app"
 /bin/ln -s /Applications "$DMG_STAGE/Applications"
 
 COPYFILE_DISABLE=1 /usr/bin/ditto -c -k --noextattr --norsrc --noqtn --keepParent "$APP" "$ZIP_PATH"
-/usr/bin/hdiutil create -volname "SpatialScope" -srcfolder "$DMG_STAGE" -ov -format UDZO "$DMG_PATH"
+/usr/bin/hdiutil create -volname "SpatialQuant" -srcfolder "$DMG_STAGE" -ov -format UDZO "$DMG_PATH"
 
 (
     cd "$RELEASE_DIR"
-    /usr/bin/shasum -a 256 SpatialScope-macOS-universal.dmg SpatialScope-macOS-universal.zip > SHA256SUMS.txt
+    /usr/bin/shasum -a 256 SpatialQuant-macOS-universal.dmg SpatialQuant-macOS-universal.zip > SHA256SUMS.txt
 )
 
 echo "Release $VERSION is ready in $RELEASE_DIR"

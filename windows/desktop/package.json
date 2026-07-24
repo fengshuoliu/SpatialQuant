@@ -1,7 +1,7 @@
 {
-  "name": "spatialscope-windows",
-  "version": "1.2.0",
-  "description": "SpatialScope desktop application for Windows",
+  "name": "spatialquant-windows",
+  "version": "1.3.0",
+  "description": "SpatialQuant desktop application for Windows",
   "main": "main.js",
   "author": "Fengshuo Liu",
   "license": "MIT",
@@ -20,8 +20,8 @@
     "electron-builder": "26.15.3"
   },
   "build": {
-    "appId": "com.fengshuoliu.SpatialScope",
-    "productName": "SpatialScope",
+    "appId": "com.fengshuoliu.SpatialQuant",
+    "productName": "SpatialQuant",
     "electronUpdaterCompatibility": ">=2.16",
     "asar": true,
     "directories": {
@@ -35,12 +35,12 @@
     ],
     "extraResources": [
       {
-        "from": "../build/SpatialScopeBackend",
-        "to": "backend/SpatialScopeBackend"
+        "from": "../build/SpatialQuantBackend",
+        "to": "backend/SpatialQuantBackend"
       }
     ],
     "win": {
-      "icon": "assets/SpatialScope.ico",
+      "icon": "assets/SpatialQuant.ico",
       "verifyUpdateCodeSignature": false,
       "target": [
         {
@@ -54,23 +54,23 @@
       ]
     },
     "nsis": {
-      "artifactName": "SpatialScope-Windows-x64-Setup-${version}.${ext}",
+      "artifactName": "SpatialQuant-Windows-x64-Setup-${version}.${ext}",
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "SpatialScope",
-      "uninstallDisplayName": "SpatialScope"
+      "shortcutName": "SpatialQuant",
+      "uninstallDisplayName": "SpatialQuant"
     },
     "portable": {
-      "artifactName": "SpatialScope-Windows-x64-Portable-${version}.${ext}"
+      "artifactName": "SpatialQuant-Windows-x64-Portable-${version}.${ext}"
     },
     "publish": [
       {
         "provider": "github",
         "owner": "fengshuoliu",
-        "repo": "SpatialScope",
+        "repo": "SpatialQuant",
         "releaseType": "release"
       }
     ]

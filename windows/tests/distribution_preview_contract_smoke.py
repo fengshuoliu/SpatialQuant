@@ -26,7 +26,7 @@ from native_engine import (
 
 
 def _assert_windows_preview_invalidation_contract() -> list[str]:
-    app_dir = WINDOWS_DIR / "native" / "src" / "SpatialScope.App"
+    app_dir = WINDOWS_DIR / "native" / "src" / "SpatialQuant.App"
     main_source = (app_dir / "MainWindow.xaml.cs").read_text(encoding="utf-8")
     region_source = (app_dir / "MainWindow.Region.cs").read_text(encoding="utf-8")
     distribution_source = (app_dir / "MainWindow.Distribution.cs").read_text(encoding="utf-8")
@@ -130,7 +130,7 @@ def _region_band_fixture(output_folder: Path) -> dict[str, Any]:
 
 def run_smoke() -> dict[str, Any]:
     invalidation_keys = _assert_windows_preview_invalidation_contract()
-    with tempfile.TemporaryDirectory(prefix="spatialscope-distribution-preview-") as temp_dir:
+    with tempfile.TemporaryDirectory(prefix="spatialquant-distribution-preview-") as temp_dir:
         output_folder = Path(temp_dir)
         config_dir = output_folder / "00_config"
         config_dir.mkdir(parents=True)

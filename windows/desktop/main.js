@@ -7,9 +7,9 @@ const path = require("node:path");
 const log = require("electron-log/main");
 const { autoUpdater } = require("electron-updater");
 
-const APP_ID = "com.fengshuoliu.SpatialQuant";
-const MANUAL_URL = "https://github.com/fengshuoliu/SpatialQuant/blob/main/docs/SpatialQuant_User_Manual.md";
-const RELEASE_URL = "https://github.com/fengshuoliu/SpatialQuant/releases/latest";
+const APP_ID = "com.fengshuoliu.SpatialPlexomera";
+const MANUAL_URL = "https://github.com/fengshuoliu/SpatialPlexomera/blob/main/docs/SpatialPlexomera_User_Manual.md";
+const RELEASE_URL = "https://github.com/fengshuoliu/SpatialPlexomera/releases/latest";
 
 let mainWindow = null;
 let backendProcess = null;
@@ -60,21 +60,21 @@ function backendCommand(port) {
   ];
 
   if (app.isPackaged) {
-    const backendRoot = path.join(process.resourcesPath, "backend", "SpatialQuantBackend");
+    const backendRoot = path.join(process.resourcesPath, "backend", "SpatialPlexomeraBackend");
     return {
-      command: path.join(backendRoot, "SpatialQuantBackend.exe"),
+      command: path.join(backendRoot, "SpatialPlexomeraBackend.exe"),
       args: commonArgs,
       cwd: backendRoot,
     };
   }
 
   const backendRoot = path.resolve(__dirname, "..", "backend");
-  const pythonCommand = process.env.SPATIALQUANT_PYTHON || "python3";
+  const pythonCommand = process.env.SPATIALPLEXOMERA_PYTHON || "python3";
   const launcherArgs = [path.join(backendRoot, "launcher.py"), ...commonArgs];
-  if (process.platform === "darwin" && process.env.SPATIALQUANT_PYTHON_ARCH) {
+  if (process.platform === "darwin" && process.env.SPATIALPLEXOMERA_PYTHON_ARCH) {
     return {
       command: "/usr/bin/arch",
-      args: [`-${process.env.SPATIALQUANT_PYTHON_ARCH}`, pythonCommand, ...launcherArgs],
+      args: [`-${process.env.SPATIALPLEXOMERA_PYTHON_ARCH}`, pythonCommand, ...launcherArgs],
       cwd: backendRoot,
     };
   }
@@ -99,7 +99,7 @@ function writeDesktopPaths(paths) {
 async function chooseDirectory(kind) {
   if (!mainWindow) return;
   const result = await dialog.showOpenDialog(mainWindow, {
-    title: kind === "input_folder" ? "Choose SpatialQuant input folder" : "Choose SpatialQuant output folder",
+    title: kind === "input_folder" ? "Choose SpatialPlexomera input folder" : "Choose SpatialPlexomera output folder",
     properties: ["openDirectory", "createDirectory"],
   });
   if (result.canceled || result.filePaths.length !== 1) return;
@@ -160,7 +160,7 @@ async function waitForBackend(port, timeoutMs = 120000) {
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
   }
-  throw new Error("SpatialQuant took too long to start.");
+  throw new Error("SpatialPlexomera took too long to start.");
 }
 
 function stopBackend() {
@@ -174,9 +174,9 @@ function showStartupError(error) {
   const detail = error instanceof Error ? error.message : String(error);
   dialog.showMessageBox({
     type: "error",
-    title: "SpatialQuant could not start",
+    title: "SpatialPlexomera could not start",
     message: "The bundled analysis runtime could not be started.",
-    detail: `${detail}\n\nReinstall the latest SpatialQuant Windows release.`,
+    detail: `${detail}\n\nReinstall the latest SpatialPlexomera Windows release.`,
     buttons: ["OK", "Open releases"],
     defaultId: 0,
   }).then(({ response }) => {
@@ -232,11 +232,11 @@ function buildMenu() {
         { label: "GitHub Releases", click: () => shell.openExternal(RELEASE_URL) },
         { type: "separator" },
         {
-          label: "About SpatialQuant",
+          label: "About SpatialPlexomera",
           click: () => dialog.showMessageBox({
             type: "info",
-            title: "About SpatialQuant",
-            message: `SpatialQuant ${app.getVersion()}`,
+            title: "About SpatialPlexomera",
+            message: `SpatialPlexomera ${app.getVersion()}`,
             detail: "Spatial image analysis for Windows.\n\nMIT License",
             buttons: ["OK"],
           }),
@@ -255,9 +255,9 @@ function configureUpdates() {
   autoUpdater.on("update-downloaded", (info) => {
     dialog.showMessageBox({
       type: "info",
-      title: "SpatialQuant update ready",
-      message: `SpatialQuant ${info.version} is ready to install.`,
-      detail: "Restart SpatialQuant to complete the update.",
+      title: "SpatialPlexomera update ready",
+      message: `SpatialPlexomera ${info.version} is ready to install.`,
+      detail: "Restart SpatialPlexomera to complete the update.",
       buttons: ["Restart and install", "Later"],
       defaultId: 0,
       cancelId: 1,
@@ -278,9 +278,9 @@ async function createWindow() {
     minWidth: 1000,
     minHeight: 700,
     backgroundColor: "#f4f7f8",
-    icon: path.join(__dirname, "assets", "SpatialQuant.ico"),
+    icon: path.join(__dirname, "assets", "SpatialPlexomera.ico"),
     show: false,
-    title: "SpatialQuant",
+    title: "SpatialPlexomera",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,

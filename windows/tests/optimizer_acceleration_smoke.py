@@ -19,14 +19,14 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 from smoke_pipeline import PIXEL_SIZE_UM, _celltype_config, _make_synthetic_channels  # noqa: E402
-from src.spatialquant_analysis.celltype_assignment import (  # noqa: E402
+from src.spatialplexomera_analysis.celltype_assignment import (  # noqa: E402
     CelltypeAssignmentParams,
     _run_celltype_assignment_impl,
     prepare_celltype_assignment_optimizer_data,
 )
-from src.spatialquant_analysis.io import files_to_long_df  # noqa: E402
-from src.spatialquant_analysis.models import NucleiParams  # noqa: E402
-from src.spatialquant_analysis.nuclei_segmentation import run_nuclei_segmentation  # noqa: E402
+from src.spatialplexomera_analysis.io import files_to_long_df  # noqa: E402
+from src.spatialplexomera_analysis.models import NucleiParams  # noqa: E402
+from src.spatialplexomera_analysis.nuclei_segmentation import run_nuclei_segmentation  # noqa: E402
 
 
 def _sorted_counts(result: dict[str, Any]) -> dict[str, int]:
@@ -258,7 +258,7 @@ def main() -> int:
             shutil.rmtree(work_root)
         report = run_smoke(work_root, max(0.0, float(args.minimum_speedup)))
     else:
-        with tempfile.TemporaryDirectory(prefix="spatialquant-optimizer-smoke-") as temp_dir:
+        with tempfile.TemporaryDirectory(prefix="spatialplexomera-optimizer-smoke-") as temp_dir:
             report = run_smoke(Path(temp_dir), max(0.0, float(args.minimum_speedup)))
     print(json.dumps(report, indent=2))
     return 0

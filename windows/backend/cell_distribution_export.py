@@ -26,9 +26,9 @@ RUNTIME_SUPPORT_DIR = Path(__file__).resolve().parent / "runtime_support"
 if RUNTIME_SUPPORT_DIR.exists() and str(RUNTIME_SUPPORT_DIR) not in sys.path:
     sys.path.insert(0, str(RUNTIME_SUPPORT_DIR))
 
-from src.spatialquant_analysis.compute_runtime import get_compute_runtime  # noqa: E402
-from src.spatialquant_analysis.io import files_to_long_df, load_any_tiff, safe_name, valid_pixel_size, write_json  # noqa: E402
-from src.spatialquant_analysis.visualization import overlay_multi_channels  # noqa: E402
+from src.spatialplexomera_analysis.compute_runtime import get_compute_runtime  # noqa: E402
+from src.spatialplexomera_analysis.io import files_to_long_df, load_any_tiff, safe_name, valid_pixel_size, write_json  # noqa: E402
+from src.spatialplexomera_analysis.visualization import overlay_multi_channels  # noqa: E402
 
 
 CELL_DISTRIBUTION_BG_BLEND = 0.45
@@ -1410,7 +1410,7 @@ def _prepare_region_requests(args: argparse.Namespace, output_folder: Path) -> L
 
 
 def main(argv: Sequence[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Export SpatialQuant Distribution outputs using the original Streamlit plotting contract.")
+    parser = argparse.ArgumentParser(description="Export SpatialPlexomera Distribution outputs using the original Streamlit plotting contract.")
     parser.add_argument("--output-folder", required=True)
     parser.add_argument(
         "--mode",

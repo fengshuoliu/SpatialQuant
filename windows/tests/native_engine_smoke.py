@@ -22,7 +22,7 @@ BACKEND_SRC = WINDOWS_DIR / "backend" / "src"
 if str(BACKEND_SRC) not in sys.path:
     sys.path.insert(0, str(BACKEND_SRC))
 
-from spatialquant_analysis.models import RegionParams  # noqa: E402
+from spatialplexomera_analysis.models import RegionParams  # noqa: E402
 
 
 def _assert_png_backed_svg(png_path: Path, svg_path: Path) -> None:
@@ -42,7 +42,7 @@ def _assert_png_backed_svg(png_path: Path, svg_path: Path) -> None:
 
 class EngineProcess:
     def __init__(self, command: Sequence[str]) -> None:
-        self._runtime = tempfile.TemporaryDirectory(prefix="spatialquant-engine-smoke-")
+        self._runtime = tempfile.TemporaryDirectory(prefix="spatialplexomera-engine-smoke-")
         runtime_path = Path(self._runtime.name)
         environment = os.environ.copy()
         environment.pop("PYTHONPATH", None)
@@ -1140,7 +1140,7 @@ def run_smoke(engine_command: Sequence[str], input_folder: Path, output_folder: 
         finally:
             restored_engine.close()
 
-        with tempfile.TemporaryDirectory(prefix="spatialquant-history-guards-") as guard_value:
+        with tempfile.TemporaryDirectory(prefix="spatialplexomera-history-guards-") as guard_value:
             guard_root = Path(guard_value)
 
             legacy_neighborhood_output = guard_root / "legacy-neighborhood-preview"
@@ -1681,12 +1681,12 @@ def run_smoke(engine_command: Sequence[str], input_folder: Path, output_folder: 
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Exercise every native SpatialQuant engine workflow through JSON Lines.")
+    parser = argparse.ArgumentParser(description="Exercise every native SpatialPlexomera engine workflow through JSON Lines.")
     parser.add_argument("--python", type=Path, default=WINDOWS_DIR / ".venv" / "Scripts" / "python.exe")
     parser.add_argument(
         "--engine-executable",
         type=Path,
-        help="Run a frozen SpatialQuantEngine executable instead of native_engine.py.",
+        help="Run a frozen SpatialPlexomeraEngine executable instead of native_engine.py.",
     )
     parser.add_argument("--input-folder", type=Path, default=WINDOWS_DIR / "build" / "smoke-output" / "synthetic_input")
     parser.add_argument("--output-folder", type=Path, default=WINDOWS_DIR / "build" / "native-engine-smoke")

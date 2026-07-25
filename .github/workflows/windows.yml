@@ -49,9 +49,9 @@ jobs:
       - name: Upload native Windows installer
         uses: actions/upload-artifact@v4
         with:
-          name: SpatialQuant-Windows-x64
+          name: SpatialPlexomera-Windows-x64
           path: |
-            windows/native/dist/SpatialQuant-Windows-x64-Setup.exe
+            windows/native/dist/SpatialPlexomera-Windows-x64-Setup.exe
             windows/native/dist/SHA256SUMS-Windows.txt
           if-no-files-found: error
           retention-days: 14

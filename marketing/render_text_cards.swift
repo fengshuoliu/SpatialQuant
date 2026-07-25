@@ -121,7 +121,7 @@ private func render(_ name: String, outputDirectory: URL, drawing: @escaping () 
         let bitmap = NSBitmapImageRep(data: tiff),
         let png = bitmap.representation(using: .png, properties: [:])
     else {
-        throw NSError(domain: "SpatialQuantMarketing", code: 1)
+        throw NSError(domain: "SpatialPlexomeraMarketing", code: 1)
     }
 
     try png.write(to: outputDirectory.appendingPathComponent(name))
@@ -129,7 +129,7 @@ private func render(_ name: String, outputDirectory: URL, drawing: @escaping () 
 
 private func drawBrand(copy: MarketingCopy) {
     drawText(
-        "SpatialQuant",
+        "SpatialPlexomera",
         x: 160, y: 88, width: 500, height: 60,
         size: 38, weight: .semibold, foreground: .white
     )
@@ -185,7 +185,7 @@ try render("intro.png", outputDirectory: outputDirectory) {
         size: 34, weight: .bold, foreground: color(120, 224, 209), alignment: .center
     )
     drawText(
-        "SpatialQuant",
+        "SpatialPlexomera",
         x: 0, y: 320, width: 1080, height: 115,
         size: 88, weight: .bold, foreground: .white, alignment: .center
     )
@@ -234,7 +234,7 @@ try render("density.png", outputDirectory: outputDirectory) {
 
 try render("end.png", outputDirectory: outputDirectory) {
     drawText(
-        "SpatialQuant",
+        "SpatialPlexomera",
         x: 0, y: 535, width: 1080, height: 105,
         size: 76, weight: .bold, foreground: .white, alignment: .center
     )
@@ -254,7 +254,7 @@ try render("end.png", outputDirectory: outputDirectory) {
         size: 37, weight: .bold, foreground: .white, alignment: .center
     )
     drawText(
-        "github.com/fengshuoliu/SpatialQuant",
+        "github.com/fengshuoliu/SpatialPlexomera",
         x: 0, y: 1025, width: 1080, height: 60,
         size: 32, weight: .semibold, foreground: .white, alignment: .center
     )

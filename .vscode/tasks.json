@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "SpatialQuant: Setup Native Windows",
+      "label": "SpatialPlexomera: Setup Native Windows",
       "type": "shell",
       "command": "powershell",
       "args": [
@@ -16,28 +16,28 @@
       "problemMatcher": []
     },
     {
-      "label": "SpatialQuant: Compile Native Windows",
+      "label": "SpatialPlexomera: Compile Native Windows",
       "type": "process",
       "command": "dotnet",
       "args": [
         "build",
-        "${workspaceFolder}\\windows\\native\\src\\SpatialQuant.App\\SpatialQuant.App.csproj",
+        "${workspaceFolder}\\windows\\native\\src\\SpatialPlexomera.App\\SpatialPlexomera.App.csproj",
         "--configuration",
         "Debug"
       ],
       "problemMatcher": "$msCompile"
     },
     {
-      "label": "SpatialQuant: Build Native Windows",
+      "label": "SpatialPlexomera: Build Native Windows",
       "dependsOrder": "sequence",
       "dependsOn": [
-        "SpatialQuant: Setup Native Windows",
-        "SpatialQuant: Compile Native Windows"
+        "SpatialPlexomera: Setup Native Windows",
+        "SpatialPlexomera: Compile Native Windows"
       ],
       "problemMatcher": []
     },
     {
-      "label": "SpatialQuant: Run Native Windows App",
+      "label": "SpatialPlexomera: Run Native Windows App",
       "type": "shell",
       "command": "powershell",
       "args": [
@@ -51,7 +51,7 @@
       "problemMatcher": []
     },
     {
-      "label": "SpatialQuant: Test Native Windows",
+      "label": "SpatialPlexomera: Test Native Windows",
       "type": "shell",
       "command": "powershell",
       "args": [
@@ -65,7 +65,7 @@
       "problemMatcher": []
     },
     {
-      "label": "SpatialQuant: Build Native Windows Release",
+      "label": "SpatialPlexomera: Build Native Windows Release",
       "type": "shell",
       "command": "powershell",
       "args": [

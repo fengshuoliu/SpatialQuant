@@ -1,13 +1,20 @@
 # Changelog
 
-All notable changes to SpatialQuant are documented here.
+All notable changes to SpatialPlexomera are documented here.
+
+## 1.4.0 - 2026-07-24 (macOS and Windows)
+
+- Renamed the application and public project to SpatialPlexomera.
+- Updated the macOS app, Windows app and installer, analysis engine, updater channels, documentation, website, download assets, citation metadata, and repository paths to use the SpatialPlexomera identity.
+- Kept the scientific workflow, parameter definitions, numerical analysis, and output contracts unchanged.
+- Established new SpatialPlexomera release and update channels. Users of builds published under the former product identity should install SpatialPlexomera 1.4.0 manually once before receiving subsequent automatic updates.
 
 ## 1.3.0 - 2026-07-24 (macOS and Windows)
 
-- Renamed the application and public project to SpatialQuant to avoid a name collision with an existing publication.
-- Updated the macOS app, Windows app and installer, analysis engine, updater channels, documentation, website, download assets, citation metadata, and repository paths to use the SpatialQuant identity.
+- Renamed the application and public project to SpatialPlexomera to avoid a name collision with an existing publication.
+- Updated the macOS app, Windows app and installer, analysis engine, updater channels, documentation, website, download assets, citation metadata, and repository paths to use the SpatialPlexomera identity.
 - Kept the scientific workflow, parameter definitions, numerical analysis, and output contracts unchanged.
-- Established new SpatialQuant release and update channels. Users of builds published under the former product identity should install SpatialQuant 1.3.0 manually once before receiving subsequent automatic updates.
+- Established new SpatialPlexomera release and update channels. Users of builds published under the former product identity should install SpatialPlexomera 1.3.0 manually once before receiving subsequent automatic updates.
 
 ## 1.2.6 - 2026-07-20 (Windows)
 
@@ -65,7 +72,7 @@ All notable changes to SpatialQuant are documented here.
 ## 1.2.1 - 2026-07-19 (macOS)
 
 - Fixed the Simplified Chinese nuclei segmentation result message that could crash the app when a saved result was opened.
-- Added a compact SpatialQuant menu bar item for showing the app, checking for updates, and quitting.
+- Added a compact SpatialPlexomera menu bar item for showing the app, checking for updates, and quitting.
 - Kept the workflow sidebar anchored while switching between analysis sections.
 
 ## 1.2 - 2026-07-18
@@ -83,7 +90,7 @@ All notable changes to SpatialQuant are documented here.
 
 - Added an in-app language selector that follows macOS by default, with explicit English and Simplified Chinese choices.
 - Kept the language control label bilingual as `Language/语言` in every interface mode.
-- Kept the `SpatialQuant` product name unchanged in both interface languages.
+- Kept the `SpatialPlexomera` product name unchanged in both interface languages.
 - Kept analysis methods, exported data, filenames, schemas, and generated figure text language-independent from the UI preference.
 - Fixed a launch-time crash caused by localized workflow status accessibility labels.
 - Fixed Cell Distribution reloads so region-mask files always come from the same saved analysis run.

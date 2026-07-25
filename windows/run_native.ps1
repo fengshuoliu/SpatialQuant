@@ -13,9 +13,9 @@ $VenvRoot = Join-Path $WindowsRoot ".venv"
 $VenvPython = Join-Path $VenvRoot "Scripts\python.exe"
 $RequirementsPath = Join-Path $BackendRoot "requirements-native.txt"
 $RequirementsStamp = Join-Path $VenvRoot "requirements-native.sha256"
-$ProjectPath = Join-Path $WindowsRoot "native\src\SpatialQuant.App\SpatialQuant.App.csproj"
-$AppContractTestProject = Join-Path $WindowsRoot "native\tests\SpatialQuant.App.ContractTests\SpatialQuant.App.ContractTests.csproj"
-$UpdaterTestProject = Join-Path $WindowsRoot "native\tests\SpatialQuant.Updater.ContractTests\SpatialQuant.Updater.ContractTests.csproj"
+$ProjectPath = Join-Path $WindowsRoot "native\src\SpatialPlexomera.App\SpatialPlexomera.App.csproj"
+$AppContractTestProject = Join-Path $WindowsRoot "native\tests\SpatialPlexomera.App.ContractTests\SpatialPlexomera.App.ContractTests.csproj"
+$UpdaterTestProject = Join-Path $WindowsRoot "native\tests\SpatialPlexomera.Updater.ContractTests\SpatialPlexomera.Updater.ContractTests.csproj"
 $SmokeRoot = Join-Path $WindowsRoot "build\smoke-output"
 $SyntheticInput = Join-Path $SmokeRoot "synthetic_input"
 
@@ -53,7 +53,7 @@ if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) {
 
 if (-not (Test-Path -LiteralPath $VenvPython)) {
     $BootstrapPython = Find-Python311
-    Write-Host "Creating the SpatialQuant Python 3.11 environment..."
+    Write-Host "Creating the SpatialPlexomera Python 3.11 environment..."
     & $BootstrapPython -m venv $VenvRoot
     Assert-Success "Python virtual environment creation"
 }
@@ -65,7 +65,7 @@ $InstalledHash = if (Test-Path -LiteralPath $RequirementsStamp) {
     ""
 }
 if ($InstalledHash -ne $RequirementsHash) {
-    Write-Host "Installing SpatialQuant native scientific dependencies..."
+    Write-Host "Installing SpatialPlexomera native scientific dependencies..."
     & $VenvPython -m pip install --upgrade pip
     Assert-Success "pip upgrade"
     & $VenvPython -m pip install -r $RequirementsPath
@@ -74,7 +74,7 @@ if ($InstalledHash -ne $RequirementsHash) {
 }
 
 if ($Command -eq "setup") {
-    Write-Host "SpatialQuant native Windows development setup is ready."
+    Write-Host "SpatialPlexomera native Windows development setup is ready."
     exit 0
 }
 

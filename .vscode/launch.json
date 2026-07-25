@@ -2,11 +2,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "SpatialQuant Windows (native)",
+      "name": "SpatialPlexomera Windows (native)",
       "type": "coreclr",
       "request": "launch",
-      "preLaunchTask": "SpatialQuant: Build Native Windows",
-      "program": "${workspaceFolder}\\windows\\native\\src\\SpatialQuant.App\\bin\\Debug\\net10.0-windows\\SpatialQuant.exe",
+      "preLaunchTask": "SpatialPlexomera: Build Native Windows",
+      "program": "${workspaceFolder}\\windows\\native\\src\\SpatialPlexomera.App\\bin\\Debug\\net10.0-windows\\SpatialPlexomera.exe",
       "cwd": "${workspaceFolder}",
       "console": "internalConsole",
       "stopAtEntry": false

@@ -1,13 +1,13 @@
 cff-version: 1.2.0
-message: "If you use SpatialQuant, please cite the software and the associated Cell article below."
-title: "SpatialQuant"
-version: "1.3.0"
+message: "If you use SpatialPlexomera, please cite the software and the associated Cell article below."
+title: "SpatialPlexomera"
+version: "1.4.0"
 date-released: 2026-07-24
 type: software
 authors:
   - family-names: "Liu"
     given-names: "Fengshuo"
-repository-code: "https://github.com/fengshuoliu/SpatialQuant"
+repository-code: "https://github.com/fengshuoliu/SpatialPlexomera"
 license: "MIT"
 abstract: >-
   Native macOS and Windows application for spatial image analysis from aligned

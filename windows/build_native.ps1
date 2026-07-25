@@ -12,14 +12,14 @@ $RepositoryRoot = Split-Path -Parent $WindowsRoot
 $BackendRoot = Join-Path $WindowsRoot "backend"
 $TestsRoot = Join-Path $WindowsRoot "tests"
 $NativeRoot = Join-Path $WindowsRoot "native"
-$InstallerScript = Join-Path $WindowsRoot "installer\SpatialQuant.nsi"
-$ProjectPath = Join-Path $NativeRoot "src\SpatialQuant.App\SpatialQuant.App.csproj"
-$AppContractTestProject = Join-Path $NativeRoot "tests\SpatialQuant.App.ContractTests\SpatialQuant.App.ContractTests.csproj"
-$UpdaterTestProject = Join-Path $NativeRoot "tests\SpatialQuant.Updater.ContractTests\SpatialQuant.Updater.ContractTests.csproj"
+$InstallerScript = Join-Path $WindowsRoot "installer\SpatialPlexomera.nsi"
+$ProjectPath = Join-Path $NativeRoot "src\SpatialPlexomera.App\SpatialPlexomera.App.csproj"
+$AppContractTestProject = Join-Path $NativeRoot "tests\SpatialPlexomera.App.ContractTests\SpatialPlexomera.App.ContractTests.csproj"
+$UpdaterTestProject = Join-Path $NativeRoot "tests\SpatialPlexomera.Updater.ContractTests\SpatialPlexomera.Updater.ContractTests.csproj"
 $BuildRoot = Join-Path $WindowsRoot "build\native-release"
 $PyInstallerWork = Join-Path $BuildRoot "pyinstaller-work"
 $EngineDistRoot = Join-Path $BuildRoot "engine-dist"
-$PublishRoot = Join-Path $BuildRoot "SpatialQuant-Windows-x64"
+$PublishRoot = Join-Path $BuildRoot "SpatialPlexomera-Windows-x64"
 $EngineStage = Join-Path $PublishRoot "engine"
 $DistRoot = Join-Path $NativeRoot "dist"
 $InstallerSmokeRoot = Join-Path $BuildRoot "installer-smoke"
@@ -161,10 +161,10 @@ try {
         --clean `
         --distpath $EngineDistRoot `
         --workpath $PyInstallerWork `
-        (Join-Path $BackendRoot "SpatialQuantEngine.spec")
+        (Join-Path $BackendRoot "SpatialPlexomeraEngine.spec")
     Assert-Success "native engine freeze"
 
-    $FrozenEngine = Join-Path $EngineDistRoot "SpatialQuantEngine\SpatialQuantEngine.exe"
+    $FrozenEngine = Join-Path $EngineDistRoot "SpatialPlexomeraEngine\SpatialPlexomeraEngine.exe"
     if (-not (Test-Path -LiteralPath $FrozenEngine)) {
         throw "PyInstaller did not produce $FrozenEngine"
     }
@@ -188,19 +188,19 @@ try {
     Assert-Success "self-contained WPF publish"
 
     New-Item -ItemType Directory -Force $EngineStage | Out-Null
-    Copy-Item -Path (Join-Path $EngineDistRoot "SpatialQuantEngine\*") -Destination $EngineStage -Recurse -Force
-    if (-not (Test-Path -LiteralPath (Join-Path $EngineStage "SpatialQuantEngine.exe"))) {
-        throw "The staged WPF package is missing SpatialQuantEngine.exe"
+    Copy-Item -Path (Join-Path $EngineDistRoot "SpatialPlexomeraEngine\*") -Destination $EngineStage -Recurse -Force
+    if (-not (Test-Path -LiteralPath (Join-Path $EngineStage "SpatialPlexomeraEngine.exe"))) {
+        throw "The staged WPF package is missing SpatialPlexomeraEngine.exe"
     }
 
     & $PythonExe (Join-Path $TestsRoot "native_overlay_smoke.py") `
-        --engine-executable (Join-Path $EngineStage "SpatialQuantEngine.exe") `
+        --engine-executable (Join-Path $EngineStage "SpatialPlexomeraEngine.exe") `
         --input-folder $SyntheticInput `
         --output-folder (Join-Path $BuildRoot "staged-overlay-smoke")
     Assert-Success "staged configure-to-overlay smoke test"
 
     if ($FullSmoke) {
-        $StagedEngine = Join-Path $EngineStage "SpatialQuantEngine.exe"
+        $StagedEngine = Join-Path $EngineStage "SpatialPlexomeraEngine.exe"
         & $PythonExe (Join-Path $TestsRoot "native_engine_smoke.py") `
             --engine-executable $StagedEngine `
             --input-folder $SyntheticInput `
@@ -208,10 +208,10 @@ try {
         Assert-Success "staged full scientific workflow smoke test"
 
         if ($RequireGpuParity) {
-            $HadGpuMode = Test-Path -LiteralPath Env:SPATIALQUANT_GPU_MODE
-            $PreviousGpuMode = $env:SPATIALQUANT_GPU_MODE
+            $HadGpuMode = Test-Path -LiteralPath Env:SPATIALPLEXOMERA_GPU_MODE
+            $PreviousGpuMode = $env:SPATIALPLEXOMERA_GPU_MODE
             try {
-                $env:SPATIALQUANT_GPU_MODE = "require"
+                $env:SPATIALPLEXOMERA_GPU_MODE = "require"
                 & $PythonExe (Join-Path $TestsRoot "native_gpu_parity.py") `
                     --engine-executable $StagedEngine `
                     --input-folder $SyntheticInput `
@@ -220,10 +220,10 @@ try {
             }
             finally {
                 if ($HadGpuMode) {
-                    $env:SPATIALQUANT_GPU_MODE = $PreviousGpuMode
+                    $env:SPATIALPLEXOMERA_GPU_MODE = $PreviousGpuMode
                 }
                 else {
-                    Remove-Item -LiteralPath Env:SPATIALQUANT_GPU_MODE -ErrorAction SilentlyContinue
+                    Remove-Item -LiteralPath Env:SPATIALPLEXOMERA_GPU_MODE -ErrorAction SilentlyContinue
                 }
             }
         }
@@ -233,15 +233,15 @@ try {
     $Version = [string]$ProjectXml.Project.PropertyGroup.Version
     $MakeNsis = Resolve-MakeNsis
     Assert-ChildPath $DistRoot $NativeRoot
-    Get-ChildItem -LiteralPath $DistRoot -Filter "SpatialQuant-Windows-x64-Portable-*.zip" -File -ErrorAction SilentlyContinue |
+    Get-ChildItem -LiteralPath $DistRoot -Filter "SpatialPlexomera-Windows-x64-Portable-*.zip" -File -ErrorAction SilentlyContinue |
         Remove-Item -Force
-    $SetupExe = Join-Path $DistRoot "SpatialQuant-Windows-x64-Setup.exe"
+    $SetupExe = Join-Path $DistRoot "SpatialPlexomera-Windows-x64-Setup.exe"
     Remove-Item -LiteralPath $SetupExe -Force -ErrorAction SilentlyContinue
     & $MakeNsis `
         "/DAPP_VERSION=$Version" `
         "/DSOURCE_DIR=$PublishRoot" `
         "/DOUTPUT_DIR=$DistRoot" `
-        "/DICON_PATH=$(Join-Path $WindowsRoot 'desktop\assets\SpatialQuant.ico')" `
+        "/DICON_PATH=$(Join-Path $WindowsRoot 'desktop\assets\SpatialPlexomera.ico')" `
         $InstallerScript
     Assert-Success "NSIS installer build"
     if (-not (Test-Path -LiteralPath $SetupExe)) {
@@ -266,15 +266,15 @@ try {
         -Wait `
         -PassThru
     if ($ProtectedInstallerProcess.ExitCode -eq 0) {
-        throw "The installer accepted a non-empty directory without a SpatialQuant ownership marker."
+        throw "The installer accepted a non-empty directory without a SpatialPlexomera ownership marker."
     }
     if (-not (Test-Path -LiteralPath $ProtectedSentinel) -or
         (Get-Content -LiteralPath $ProtectedSentinel -Raw) -ne "user-owned sentinel") {
         throw "The installer modified a protected user-owned directory."
     }
-    if ((Test-Path -LiteralPath (Join-Path $ProtectedRoot ".spatialquant-install")) -or
-        (Test-Path -LiteralPath (Join-Path $ProtectedRoot "SpatialQuant.exe"))) {
-        throw "The rejected installer run left SpatialQuant files in the protected directory."
+    if ((Test-Path -LiteralPath (Join-Path $ProtectedRoot ".spatialplexomera-install")) -or
+        (Test-Path -LiteralPath (Join-Path $ProtectedRoot "SpatialPlexomera.exe"))) {
+        throw "The rejected installer run left SpatialPlexomera files in the protected directory."
     }
 
     $InstalledRoot = Join-Path $InstallerSmokeRoot "installed"
@@ -287,10 +287,10 @@ try {
     if ($InstallerProcess.ExitCode -ne 0) {
         throw "silent installer smoke test failed with exit code $($InstallerProcess.ExitCode)"
     }
-    $InstalledApp = Join-Path $InstalledRoot "SpatialQuant.exe"
-    $InstalledEngine = Join-Path $InstalledRoot "engine\SpatialQuantEngine.exe"
-    $InstallMarker = Join-Path $InstalledRoot ".spatialquant-install"
-    $SmokeMarker = Join-Path $InstalledRoot ".spatialquant-smoke"
+    $InstalledApp = Join-Path $InstalledRoot "SpatialPlexomera.exe"
+    $InstalledEngine = Join-Path $InstalledRoot "engine\SpatialPlexomeraEngine.exe"
+    $InstallMarker = Join-Path $InstalledRoot ".spatialplexomera-install"
+    $SmokeMarker = Join-Path $InstalledRoot ".spatialplexomera-smoke"
     if (-not (Test-Path -LiteralPath $InstalledApp) -or
         -not (Test-Path -LiteralPath $InstalledEngine) -or
         -not (Test-Path -LiteralPath $InstallMarker) -or
@@ -305,23 +305,23 @@ try {
     # owned installation, then relaunch the updated app.
     $PreUpdateCapturePath = Join-Path $InstallerSmokeRoot "pre-update-app.png"
     $UpdateCapturePath = Join-Path $InstallerSmokeRoot "updated-app.png"
-    $UpdatePreviousCapturePath = $env:SPATIALQUANT_CAPTURE_PATH
-    $UpdatePreviousCaptureExit = $env:SPATIALQUANT_CAPTURE_EXIT
-    $UpdatePreviousExitDelay = $env:SPATIALQUANT_QA_EXIT_DELAY_MS
-    $UpdateHadCheckSetting = Test-Path -LiteralPath Env:SPATIALQUANT_DISABLE_UPDATE_CHECK
-    $UpdatePreviousCheckSetting = $env:SPATIALQUANT_DISABLE_UPDATE_CHECK
-    $HadQaMutexSetting = Test-Path -LiteralPath Env:SPATIALQUANT_QA_INSTANCE_MUTEX
-    $PreviousQaMutexSetting = $env:SPATIALQUANT_QA_INSTANCE_MUTEX
-    $SmokeInstanceMutexName = "Local\SpatialQuant.Windows.Application.QA.$([Guid]::NewGuid().ToString('N'))"
-    $env:SPATIALQUANT_QA_INSTANCE_MUTEX = $SmokeInstanceMutexName
+    $UpdatePreviousCapturePath = $env:SPATIALPLEXOMERA_CAPTURE_PATH
+    $UpdatePreviousCaptureExit = $env:SPATIALPLEXOMERA_CAPTURE_EXIT
+    $UpdatePreviousExitDelay = $env:SPATIALPLEXOMERA_QA_EXIT_DELAY_MS
+    $UpdateHadCheckSetting = Test-Path -LiteralPath Env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK
+    $UpdatePreviousCheckSetting = $env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK
+    $HadQaMutexSetting = Test-Path -LiteralPath Env:SPATIALPLEXOMERA_QA_INSTANCE_MUTEX
+    $PreviousQaMutexSetting = $env:SPATIALPLEXOMERA_QA_INSTANCE_MUTEX
+    $SmokeInstanceMutexName = "Local\SpatialPlexomera.Windows.Application.QA.$([Guid]::NewGuid().ToString('N'))"
+    $env:SPATIALPLEXOMERA_QA_INSTANCE_MUTEX = $SmokeInstanceMutexName
     $PriorInstalledProcess = $null
     $DuplicateInstalledProcess = $null
     $UpdateInstallerProcess = $null
     try {
-        $env:SPATIALQUANT_CAPTURE_PATH = $PreUpdateCapturePath
-        $env:SPATIALQUANT_CAPTURE_EXIT = "1"
-        $env:SPATIALQUANT_QA_EXIT_DELAY_MS = "5000"
-        $env:SPATIALQUANT_DISABLE_UPDATE_CHECK = "1"
+        $env:SPATIALPLEXOMERA_CAPTURE_PATH = $PreUpdateCapturePath
+        $env:SPATIALPLEXOMERA_CAPTURE_EXIT = "1"
+        $env:SPATIALPLEXOMERA_QA_EXIT_DELAY_MS = "5000"
+        $env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK = "1"
         [System.IO.File]::WriteAllText($InstallMarker, "waiting for prior process", [System.Text.Encoding]::ASCII)
         $PriorInstalledProcess = Start-Process `
             -FilePath $InstalledApp `
@@ -339,24 +339,24 @@ try {
         }
 
         $DuplicateCapturePath = Join-Path $InstallerSmokeRoot "duplicate-app.png"
-        $env:SPATIALQUANT_CAPTURE_PATH = $DuplicateCapturePath
-        $env:SPATIALQUANT_QA_EXIT_DELAY_MS = "0"
+        $env:SPATIALPLEXOMERA_CAPTURE_PATH = $DuplicateCapturePath
+        $env:SPATIALPLEXOMERA_QA_EXIT_DELAY_MS = "0"
         $DuplicateInstalledProcess = Start-Process `
             -FilePath $InstalledApp `
             -ArgumentList "--qa-smoke" `
             -WindowStyle Hidden `
             -PassThru
         if (-not $DuplicateInstalledProcess.WaitForExit(5000)) {
-            throw "A duplicate SpatialQuant instance did not exit while the primary instance held the mutex."
+            throw "A duplicate SpatialPlexomera instance did not exit while the primary instance held the mutex."
         }
         if (Test-Path -LiteralPath $DuplicateCapturePath) {
-            throw "A duplicate SpatialQuant instance opened a window instead of respecting the single-instance mutex."
+            throw "A duplicate SpatialPlexomera instance opened a window instead of respecting the single-instance mutex."
         }
 
         # The installer inherits these values for the app it relaunches; the
         # already-running old process retains its original delayed-exit values.
-        $env:SPATIALQUANT_CAPTURE_PATH = $UpdateCapturePath
-        $env:SPATIALQUANT_QA_EXIT_DELAY_MS = "0"
+        $env:SPATIALPLEXOMERA_CAPTURE_PATH = $UpdateCapturePath
+        $env:SPATIALPLEXOMERA_QA_EXIT_DELAY_MS = "0"
         $UpdateInstallerProcess = Start-Process `
             -FilePath $SetupExe `
             -ArgumentList @("/S", "/SMOKETEST", "/UPDATEPID=$($PriorInstalledProcess.Id)", "/D=$InstalledRoot") `
@@ -375,7 +375,7 @@ try {
         if (-not $UpdateInstallerProcess.WaitForExit(60000) -or $UpdateInstallerProcess.ExitCode -ne 0) {
             throw "The update installer did not finish successfully after the previous PID exited."
         }
-        if ((Get-Content -LiteralPath $InstallMarker -Raw).Trim() -ne "SpatialQuant $Version") {
+        if ((Get-Content -LiteralPath $InstallMarker -Raw).Trim() -ne "SpatialPlexomera $Version") {
             throw "The update installer did not replace the owned installation after the previous PID exited."
         }
         $UpdateCaptureDeadline = [DateTime]::UtcNow.AddSeconds(60)
@@ -383,7 +383,7 @@ try {
             Start-Sleep -Milliseconds 200
         }
         if (-not (Test-Path -LiteralPath $UpdateCapturePath)) {
-            throw "The update installer did not relaunch the updated SpatialQuant app."
+            throw "The update installer did not relaunch the updated SpatialPlexomera app."
         }
 
         # Do not start the following launch smoke until the relaunched app has
@@ -419,32 +419,32 @@ try {
             Stop-Process -Id $UpdateInstallerProcess.Id -Force -ErrorAction SilentlyContinue
         }
         Stop-ProcessesAtExactPaths @($InstalledApp, $InstalledEngine)
-        $env:SPATIALQUANT_CAPTURE_PATH = $UpdatePreviousCapturePath
-        $env:SPATIALQUANT_CAPTURE_EXIT = $UpdatePreviousCaptureExit
-        $env:SPATIALQUANT_QA_EXIT_DELAY_MS = $UpdatePreviousExitDelay
+        $env:SPATIALPLEXOMERA_CAPTURE_PATH = $UpdatePreviousCapturePath
+        $env:SPATIALPLEXOMERA_CAPTURE_EXIT = $UpdatePreviousCaptureExit
+        $env:SPATIALPLEXOMERA_QA_EXIT_DELAY_MS = $UpdatePreviousExitDelay
         if ($UpdateHadCheckSetting) {
-            $env:SPATIALQUANT_DISABLE_UPDATE_CHECK = $UpdatePreviousCheckSetting
+            $env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK = $UpdatePreviousCheckSetting
         } else {
-            Remove-Item -LiteralPath Env:SPATIALQUANT_DISABLE_UPDATE_CHECK -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath Env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK -ErrorAction SilentlyContinue
         }
         if ($HadQaMutexSetting) {
-            $env:SPATIALQUANT_QA_INSTANCE_MUTEX = $PreviousQaMutexSetting
+            $env:SPATIALPLEXOMERA_QA_INSTANCE_MUTEX = $PreviousQaMutexSetting
         } else {
-            Remove-Item -LiteralPath Env:SPATIALQUANT_QA_INSTANCE_MUTEX -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath Env:SPATIALPLEXOMERA_QA_INSTANCE_MUTEX -ErrorAction SilentlyContinue
         }
     }
 
     $CapturePath = Join-Path $InstallerSmokeRoot "installed-app.png"
-    $PreviousCapturePath = $env:SPATIALQUANT_CAPTURE_PATH
-    $PreviousCaptureExit = $env:SPATIALQUANT_CAPTURE_EXIT
-    $HadUpdateCheckSetting = Test-Path -LiteralPath Env:SPATIALQUANT_DISABLE_UPDATE_CHECK
-    $PreviousUpdateCheckSetting = $env:SPATIALQUANT_DISABLE_UPDATE_CHECK
+    $PreviousCapturePath = $env:SPATIALPLEXOMERA_CAPTURE_PATH
+    $PreviousCaptureExit = $env:SPATIALPLEXOMERA_CAPTURE_EXIT
+    $HadUpdateCheckSetting = Test-Path -LiteralPath Env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK
+    $PreviousUpdateCheckSetting = $env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK
     $InstalledProcess = $null
     try {
-        $env:SPATIALQUANT_QA_INSTANCE_MUTEX = $SmokeInstanceMutexName
-        $env:SPATIALQUANT_CAPTURE_PATH = $CapturePath
-        $env:SPATIALQUANT_CAPTURE_EXIT = "1"
-        $env:SPATIALQUANT_DISABLE_UPDATE_CHECK = "1"
+        $env:SPATIALPLEXOMERA_QA_INSTANCE_MUTEX = $SmokeInstanceMutexName
+        $env:SPATIALPLEXOMERA_CAPTURE_PATH = $CapturePath
+        $env:SPATIALPLEXOMERA_CAPTURE_EXIT = "1"
+        $env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK = "1"
         $InstalledProcess = Start-Process `
             -FilePath $InstalledApp `
             -ArgumentList "--qa-smoke" `
@@ -452,7 +452,7 @@ try {
             -PassThru
         if (-not $InstalledProcess.WaitForExit(30000)) {
             Stop-Process -Id $InstalledProcess.Id -Force -ErrorAction SilentlyContinue
-            throw "The installed SpatialQuant app did not finish its launch smoke test."
+            throw "The installed SpatialPlexomera app did not finish its launch smoke test."
         }
     }
     finally {
@@ -460,23 +460,23 @@ try {
             Stop-Process -Id $InstalledProcess.Id -Force -ErrorAction SilentlyContinue
         }
         Stop-ProcessesAtExactPaths @($InstalledApp, $InstalledEngine)
-        $env:SPATIALQUANT_CAPTURE_PATH = $PreviousCapturePath
-        $env:SPATIALQUANT_CAPTURE_EXIT = $PreviousCaptureExit
+        $env:SPATIALPLEXOMERA_CAPTURE_PATH = $PreviousCapturePath
+        $env:SPATIALPLEXOMERA_CAPTURE_EXIT = $PreviousCaptureExit
         if ($HadUpdateCheckSetting) {
-            $env:SPATIALQUANT_DISABLE_UPDATE_CHECK = $PreviousUpdateCheckSetting
+            $env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK = $PreviousUpdateCheckSetting
         } else {
-            Remove-Item -LiteralPath Env:SPATIALQUANT_DISABLE_UPDATE_CHECK -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath Env:SPATIALPLEXOMERA_DISABLE_UPDATE_CHECK -ErrorAction SilentlyContinue
         }
         if ($HadQaMutexSetting) {
-            $env:SPATIALQUANT_QA_INSTANCE_MUTEX = $PreviousQaMutexSetting
+            $env:SPATIALPLEXOMERA_QA_INSTANCE_MUTEX = $PreviousQaMutexSetting
         } else {
-            Remove-Item -LiteralPath Env:SPATIALQUANT_QA_INSTANCE_MUTEX -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath Env:SPATIALPLEXOMERA_QA_INSTANCE_MUTEX -ErrorAction SilentlyContinue
         }
     }
     if (-not (Test-Path -LiteralPath $CapturePath)) {
-        throw "The installed SpatialQuant app did not render its launch capture."
+        throw "The installed SpatialPlexomera app did not render its launch capture."
     }
-    $Uninstaller = Join-Path $InstalledRoot "Uninstall SpatialQuant.exe"
+    $Uninstaller = Join-Path $InstalledRoot "Uninstall SpatialPlexomera.exe"
     $UninstallProcess = Start-Process -FilePath $Uninstaller -ArgumentList "/S" -WindowStyle Hidden -Wait -PassThru
     if ($UninstallProcess.ExitCode -ne 0 -or (Test-Path -LiteralPath $InstalledApp)) {
         throw "silent uninstaller smoke test failed."
@@ -490,8 +490,8 @@ try {
         [System.Text.Encoding]::ASCII
     )
 
-    Write-Host "Native SpatialQuant $Version is ready."
-    Write-Host "Run: $(Join-Path $PublishRoot 'SpatialQuant.exe')"
+    Write-Host "Native SpatialPlexomera $Version is ready."
+    Write-Host "Run: $(Join-Path $PublishRoot 'SpatialPlexomera.exe')"
     Write-Host "Installer: $SetupExe"
 }
 finally {

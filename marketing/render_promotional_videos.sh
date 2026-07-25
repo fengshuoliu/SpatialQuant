@@ -5,7 +5,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 OUTPUT_DIR="$ROOT_DIR/marketing/output"
 CARDS_ROOT="$OUTPUT_DIR/cards"
 
-ICON="$ROOT_DIR/docs/assets/SpatialQuant-icon.png"
+ICON="$ROOT_DIR/docs/assets/SpatialPlexomera-icon.png"
 COMPOSITE="$ROOT_DIR/docs/figures/03-composite-overlay-preview.jpg"
 NUCLEI="$ROOT_DIR/docs/figures/07-final-nuclei-segmentation.jpg"
 CELL_TYPES="$ROOT_DIR/docs/figures/10-final-cell-type-assignment.jpg"
@@ -26,7 +26,7 @@ render_video() {
     local language="$1"
     local language_name="$2"
     local cards_dir="$CARDS_ROOT/$language"
-    local output_video="$OUTPUT_DIR/SpatialQuant-Promotional-Video-${language_name}-9x16.mp4"
+    local output_video="$OUTPUT_DIR/SpatialPlexomera-Promotional-Video-${language_name}-9x16.mp4"
 
     mkdir -p "$cards_dir"
     /usr/bin/xcrun swift "$CARD_RENDERER" "$cards_dir" "$language"
@@ -125,9 +125,9 @@ render_video() {
     -pix_fmt yuv420p -color_range tv -movflags +faststart -c:a aac -b:a 192k "$output_video"
 
     ffmpeg -y -v error -ss 8.9 -i "$output_video" -frames:v 1 \
-        "$OUTPUT_DIR/SpatialQuant-Promotional-Poster-${language_name}-9x16.jpg"
+        "$OUTPUT_DIR/SpatialPlexomera-Promotional-Poster-${language_name}-9x16.jpg"
     ffmpeg -y -v error -i "$output_video" -vf "fps=1,scale=216:384,tile=5x2" -frames:v 1 \
-        "$OUTPUT_DIR/SpatialQuant-Promotional-Contact-Sheet-${language_name}.jpg"
+        "$OUTPUT_DIR/SpatialPlexomera-Promotional-Contact-Sheet-${language_name}.jpg"
 
     printf 'Created %s\n' "$output_video"
 }

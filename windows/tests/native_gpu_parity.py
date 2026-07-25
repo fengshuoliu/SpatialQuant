@@ -86,8 +86,8 @@ def _run_smoke(
         command.extend(("--engine-executable", str(engine_executable)))
 
     environment = os.environ.copy()
-    environment["SPATIALQUANT_GPU_MODE"] = gpu_mode
-    environment["SPATIALQUANT_GPU_PARITY_MODE"] = parity_mode
+    environment["SPATIALPLEXOMERA_GPU_MODE"] = gpu_mode
+    environment["SPATIALPLEXOMERA_GPU_PARITY_MODE"] = parity_mode
     completed = subprocess.run(
         command,
         cwd=str(WINDOWS_DIR),
@@ -254,7 +254,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--engine-executable",
         type=Path,
-        help="Run a frozen SpatialQuantEngine executable instead of native_engine.py.",
+        help="Run a frozen SpatialPlexomeraEngine executable instead of native_engine.py.",
     )
     parser.add_argument(
         "--input-folder",

@@ -1,43 +1,43 @@
-# Release SpatialQuant Through GitHub
+# Release SpatialPlexomera Through GitHub
 
-SpatialQuant distributes ad-hoc-signed macOS builds and unsigned Windows x64 builds through GitHub Releases. SpatialQuant 1.3.0 establishes the new macOS Sparkle feed and native Windows GitHub updater channel. Apple Developer Program and commercial Windows code-signing memberships are not required. Users approve the app once through macOS Privacy & Security or Windows SmartScreen.
+SpatialPlexomera distributes ad-hoc-signed macOS builds and unsigned Windows x64 builds through GitHub Releases. SpatialPlexomera 1.4.0 establishes the new macOS Sparkle feed and native Windows GitHub updater channel. Apple Developer Program and commercial Windows code-signing memberships are not required. Users approve the app once through macOS Privacy & Security or Windows SmartScreen.
 
 ## Platform versions and tags
 
 - macOS uses `v<version>` tags, the Xcode marketing version and build number, and the Sparkle feed in `docs/appcast.xml`.
-- Windows uses `windows-v<version>` tags and the `<Version>` value in `windows/native/src/SpatialQuant.App/SpatialQuant.App.csproj`.
+- Windows uses `windows-v<version>` tags and the `<Version>` value in `windows/native/src/SpatialPlexomera.App/SpatialPlexomera.App.csproj`.
 - A Windows-only release must not change the Xcode version, macOS artifacts, or Sparkle appcast.
 - Public platform download links use `docs/download/<platform>/`, which selects the newest published release for that platform. GitHub's repository-level Latest badge may point to either platform without breaking the other platform's download.
 
 The stable public download routes are:
 
 ```text
-https://fengshuoliu.github.io/SpatialQuant/download/macos/
-https://fengshuoliu.github.io/SpatialQuant/download/windows/
+https://fengshuoliu.github.io/SpatialPlexomera/download/macos/
+https://fengshuoliu.github.io/SpatialPlexomera/download/windows/
 ```
 
 The router ignores drafts and prereleases, selects the most recently published matching platform tag, and requires the stable asset name listed below. Keep version-pinned GitHub asset URLs in release records and the Sparkle feed; use the router for public “latest” download links.
 
-For Windows 1.3.0, use the tag `windows-v1.3.0`. Its stable download URL is:
+For Windows 1.4.0, use the tag `windows-v1.4.0`. Its stable download URL is:
 
 ```text
-https://github.com/fengshuoliu/SpatialQuant/releases/download/windows-v1.3.0/SpatialQuant-Windows-x64-Setup.exe
+https://github.com/fengshuoliu/SpatialPlexomera/releases/download/windows-v1.4.0/SpatialPlexomera-Windows-x64-Setup.exe
 ```
 
 The macOS download URL remains pinned to its platform release:
 
 ```text
-https://github.com/fengshuoliu/SpatialQuant/releases/download/v1.3.0/SpatialQuant-macOS-universal.dmg
+https://github.com/fengshuoliu/SpatialPlexomera/releases/download/v1.4.0/SpatialPlexomera-macOS-universal.dmg
 ```
 
 ## One-time setup
 
-1. Keep the Sparkle private EdDSA key in the macOS login Keychain. Do not commit, export, or share it. The matching public key is stored as `SUPublicEDKey` in `SpatialQuant/Info.plist`.
+1. Keep the Sparkle private EdDSA key in the macOS login Keychain. Do not commit, export, or share it. The matching public key is stored as `SUPublicEDKey` in `SpatialPlexomera/Info.plist`.
 2. Enable GitHub Pages for the repository with `main` and `/docs` as the source.
-3. Confirm that the feed URL in `SpatialQuant/Info.plist` is:
+3. Confirm that the feed URL in `SpatialPlexomera/Info.plist` is:
 
    ```text
-   https://fengshuoliu.github.io/SpatialQuant/appcast.xml
+   https://fengshuoliu.github.io/SpatialPlexomera/appcast.xml
    ```
 
 4. Keep the platform asset names stable.
@@ -45,15 +45,15 @@ https://github.com/fengshuoliu/SpatialQuant/releases/download/v1.3.0/SpatialQuan
    macOS:
 
    ```text
-   SpatialQuant-macOS-universal.dmg
-   SpatialQuant-macOS-universal.zip
+   SpatialPlexomera-macOS-universal.dmg
+   SpatialPlexomera-macOS-universal.zip
    SHA256SUMS.txt
    ```
 
    Windows:
 
    ```text
-   SpatialQuant-Windows-x64-Setup.exe
+   SpatialPlexomera-Windows-x64-Setup.exe
    SHA256SUMS-Windows.txt
    ```
 
@@ -72,7 +72,7 @@ https://github.com/fengshuoliu/SpatialQuant/releases/download/v1.3.0/SpatialQuan
 
 ## Prepare a Windows release
 
-1. Set the intended Windows version in `windows/native/src/SpatialQuant.App/SpatialQuant.App.csproj` without changing the macOS version.
+1. Set the intended Windows version in `windows/native/src/SpatialPlexomera.App/SpatialPlexomera.App.csproj` without changing the macOS version.
 2. Add the release date and user-facing Windows changes to `CHANGELOG.md`.
 3. On a Windows x64 host, prepare and test the source application:
 
@@ -90,23 +90,23 @@ https://github.com/fengshuoliu/SpatialQuant/releases/download/v1.3.0/SpatialQuan
 5. Confirm that the build succeeds and produces:
 
    ```text
-   windows/native/dist/SpatialQuant-Windows-x64-Setup.exe
+   windows/native/dist/SpatialPlexomera-Windows-x64-Setup.exe
    windows/native/dist/SHA256SUMS-Windows.txt
    ```
 
-6. Run the setup program, launch SpatialQuant from its installed shortcut, and verify native input/output folder selection, the sidebar **Check for updates** action, Step 2 SVG and PNG generation, one representative complete workflow, exported files, reopening the output folder, and uninstalling from Windows Settings.
-7. Push the release branch and wait for the Windows workflow to pass. Download the `SpatialQuant-Windows-x64` workflow artifact and confirm that it contains only the setup executable and Windows checksum file. The workflow runs the updater contract tests, frozen renderer, Step 2, and the complete synthetic nine-stage analysis before packaging.
+6. Run the setup program, launch SpatialPlexomera from its installed shortcut, and verify native input/output folder selection, the sidebar **Check for updates** action, Step 2 SVG and PNG generation, one representative complete workflow, exported files, reopening the output folder, and uninstalling from Windows Settings.
+7. Push the release branch and wait for the Windows workflow to pass. Download the `SpatialPlexomera-Windows-x64` workflow artifact and confirm that it contains only the setup executable and Windows checksum file. The workflow runs the updater contract tests, frozen renderer, Step 2, and the complete synthetic nine-stage analysis before packaging.
 
 ### Windows update channel contract
 
-The native updater queries `https://api.github.com/repos/fengshuoliu/SpatialQuant/releases?per_page=100`; it never uses the repository-wide `/releases/latest` route because that route can point to either platform. A Windows update is eligible only when it is a published, non-prerelease `windows-v<version>` release newer than the installed version and contains exactly one uploaded, nonempty asset with each stable name:
+The native updater queries `https://api.github.com/repos/fengshuoliu/SpatialPlexomera/releases?per_page=100`; it never uses the repository-wide `/releases/latest` route because that route can point to either platform. A Windows update is eligible only when it is a published, non-prerelease `windows-v<version>` release newer than the installed version and contains exactly one uploaded, nonempty asset with each stable name:
 
 ```text
-SpatialQuant-Windows-x64-Setup.exe
+SpatialPlexomera-Windows-x64-Setup.exe
 SHA256SUMS-Windows.txt
 ```
 
-Before installation, the updater requires the exact GitHub download path, a valid GitHub `sha256:` asset digest, the declared asset size, and a matching exact filename entry in `SHA256SUMS-Windows.txt`. Do not rename these assets, attach duplicates, omit the checksum, or publish the release before both uploads finish. SpatialQuant 1.3.0 and later check this channel automatically once per day.
+Before installation, the updater requires the exact GitHub download path, a valid GitHub `sha256:` asset digest, the declared asset size, and a matching exact filename entry in `SHA256SUMS-Windows.txt`. Do not rename these assets, attach duplicates, omit the checksum, or publish the release before both uploads finish. SpatialPlexomera 1.4.0 and later check this channel automatically once per day.
 
 ## Generate the Sparkle feed for macOS
 
@@ -114,19 +114,19 @@ Do this only for a macOS release. Create a temporary directory containing only t
 
 ```bash
 SPARKLE_BIN="build/DerivedData-Release/SourcePackages/artifacts/sparkle/Sparkle/bin"
-MAC_VERSION="1.3.0"
+MAC_VERSION="1.4.0"
 RELEASE_DIR="build/release/v${MAC_VERSION}"
-APPCAST_WORK="$(mktemp -d /tmp/spatialquant-appcast.XXXXXX)"
+APPCAST_WORK="$(mktemp -d /tmp/spatialplexomera-appcast.XXXXXX)"
 
 ditto --noextattr --norsrc \
-  "$RELEASE_DIR/SpatialQuant-macOS-universal.zip" \
-  "$APPCAST_WORK/SpatialQuant-macOS-universal.zip"
+  "$RELEASE_DIR/SpatialPlexomera-macOS-universal.zip" \
+  "$APPCAST_WORK/SpatialPlexomera-macOS-universal.zip"
 ditto --noextattr --norsrc CHANGELOG.md \
-  "$APPCAST_WORK/SpatialQuant-macOS-universal.md"
+  "$APPCAST_WORK/SpatialPlexomera-macOS-universal.md"
 
 "$SPARKLE_BIN/generate_appcast" \
-  --download-url-prefix "https://github.com/fengshuoliu/SpatialQuant/releases/download/v${MAC_VERSION}/" \
-  --link "https://fengshuoliu.github.io/SpatialQuant/" \
+  --download-url-prefix "https://github.com/fengshuoliu/SpatialPlexomera/releases/download/v${MAC_VERSION}/" \
+  --link "https://fengshuoliu.github.io/SpatialPlexomera/" \
   --embed-release-notes \
   -o "$APPCAST_WORK/appcast.xml" \
   "$APPCAST_WORK"
@@ -148,19 +148,19 @@ Inspect `docs/appcast.xml` before publishing. It must contain the new version, b
 6. Wait for GitHub Pages to deploy, then open:
 
    ```text
-   https://fengshuoliu.github.io/SpatialQuant/appcast.xml
+   https://fengshuoliu.github.io/SpatialPlexomera/appcast.xml
    ```
 
-7. In the previous public macOS version, select **SpatialQuant > Check for Updates...** and complete the update.
+7. In the previous public macOS version, select **SpatialPlexomera > Check for Updates...** and complete the update.
 
 ## Publish a Windows release
 
 1. Commit and push the Windows version, changelog, source changes, and release documentation.
 2. Create the tag `windows-v<version>` from the tested commit.
-3. Create a normal GitHub release named `SpatialQuant <version> for Windows`. Upload `SpatialQuant-Windows-x64-Setup.exe` and `SHA256SUMS-Windows.txt`.
+3. Create a normal GitHub release named `SpatialPlexomera <version> for Windows`. Upload `SpatialPlexomera-Windows-x64-Setup.exe` and `SHA256SUMS-Windows.txt`.
 4. Set the GitHub Releases API field `make_latest` deliberately. The platform-aware download routes keep both platforms available independently even though GitHub exposes only one repository-wide Latest release.
 5. Publish the Windows release and verify the pinned setup URL, automatic Windows download route, GitHub asset digest, checksum, installation, application launch, manual in-app update check, and uninstall on Windows 10 or 11.
-6. Confirm that `https://github.com/fengshuoliu/SpatialQuant/releases/latest` resolves to the intended repository-wide release and that both platform-aware download routes select the newest published release for their platform.
+6. Confirm that `https://github.com/fengshuoliu/SpatialPlexomera/releases/latest` resolves to the intended repository-wide release and that both platform-aware download routes select the newest published release for their platform.
 7. Do not regenerate or commit `docs/appcast.xml` for this Windows-only release.
 8. Keep public Windows download links pointed at `download/windows/`. Do not use `/releases/latest/download/` for a platform-specific asset because GitHub has only one repository-wide Latest release.
 

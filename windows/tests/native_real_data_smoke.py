@@ -403,7 +403,7 @@ def run_real_data_smoke(
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Run the complete frozen native workflow on real SpatialQuant data without overwriting prior results."
+        description="Run the complete frozen native workflow on real SpatialPlexomera data without overwriting prior results."
     )
     parser.add_argument("--engine-executable", type=Path, required=True)
     parser.add_argument("--input-folder", type=Path, required=True)

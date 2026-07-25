@@ -1,7 +1,7 @@
 {
-  "name": "spatialquant-windows",
-  "version": "1.3.0",
-  "description": "SpatialQuant desktop application for Windows",
+  "name": "spatialplexomera-windows",
+  "version": "1.4.0",
+  "description": "SpatialPlexomera desktop application for Windows",
   "main": "main.js",
   "author": "Fengshuo Liu",
   "license": "MIT",
@@ -20,8 +20,8 @@
     "electron-builder": "26.15.3"
   },
   "build": {
-    "appId": "com.fengshuoliu.SpatialQuant",
-    "productName": "SpatialQuant",
+    "appId": "com.fengshuoliu.SpatialPlexomera",
+    "productName": "SpatialPlexomera",
     "electronUpdaterCompatibility": ">=2.16",
     "asar": true,
     "directories": {
@@ -35,12 +35,12 @@
     ],
     "extraResources": [
       {
-        "from": "../build/SpatialQuantBackend",
-        "to": "backend/SpatialQuantBackend"
+        "from": "../build/SpatialPlexomeraBackend",
+        "to": "backend/SpatialPlexomeraBackend"
       }
     ],
     "win": {
-      "icon": "assets/SpatialQuant.ico",
+      "icon": "assets/SpatialPlexomera.ico",
       "verifyUpdateCodeSignature": false,
       "target": [
         {
@@ -54,23 +54,23 @@
       ]
     },
     "nsis": {
-      "artifactName": "SpatialQuant-Windows-x64-Setup-${version}.${ext}",
+      "artifactName": "SpatialPlexomera-Windows-x64-Setup-${version}.${ext}",
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "SpatialQuant",
-      "uninstallDisplayName": "SpatialQuant"
+      "shortcutName": "SpatialPlexomera",
+      "uninstallDisplayName": "SpatialPlexomera"
     },
     "portable": {
-      "artifactName": "SpatialQuant-Windows-x64-Portable-${version}.${ext}"
+      "artifactName": "SpatialPlexomera-Windows-x64-Portable-${version}.${ext}"
     },
     "publish": [
       {
         "provider": "github",
         "owner": "fengshuoliu",
-        "repo": "SpatialQuant",
+        "repo": "SpatialPlexomera",
         "releaseType": "release"
       }
     ]

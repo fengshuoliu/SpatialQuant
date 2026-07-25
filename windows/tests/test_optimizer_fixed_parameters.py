@@ -13,17 +13,17 @@ BACKEND_DIR = Path(__file__).resolve().parents[1] / "backend"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-from src.spatialquant_analysis.celltype_assignment import (  # noqa: E402
+from src.spatialplexomera_analysis.celltype_assignment import (  # noqa: E402
     CELLTYPE_OPTIMIZER_PARAM_ORDER,
     _build_celltype_assignment_search_space_specs,
     _sample_global_celltype_assignment_candidates,
 )
-from src.spatialquant_analysis.nuclei_segmentation import (  # noqa: E402
+from src.spatialplexomera_analysis.nuclei_segmentation import (  # noqa: E402
     SWEEP_PARAM_ORDER,
     _build_search_space_specs,
     _sample_global_search_candidates,
 )
-from src.spatialquant_analysis.optimizer_fixed_parameters import (  # noqa: E402
+from src.spatialplexomera_analysis.optimizer_fixed_parameters import (  # noqa: E402
     apply_assignment_fixed_parameter_keys,
     apply_nuclei_fixed_parameter_keys,
 )

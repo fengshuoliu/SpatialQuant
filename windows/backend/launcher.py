@@ -13,7 +13,7 @@ def bundled_root() -> Path:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="SpatialQuant Windows analysis runtime")
+    parser = argparse.ArgumentParser(description="SpatialPlexomera Windows analysis runtime")
     parser.add_argument("--port", type=int, required=True)
     parser.add_argument("--session-root", type=Path)
     parser.add_argument("--settings-path", type=Path)
@@ -24,22 +24,22 @@ def parse_args() -> argparse.Namespace:
 
 
 def configure_environment(args: argparse.Namespace) -> None:
-    runtime_root = Path(args.session_root or (Path(tempfile.gettempdir()) / "SpatialQuant" / "sessions"))
+    runtime_root = Path(args.session_root or (Path(tempfile.gettempdir()) / "SpatialPlexomera" / "sessions"))
     runtime_root.mkdir(parents=True, exist_ok=True)
     matplotlib_root = runtime_root.parent / "matplotlib"
     matplotlib_root.mkdir(parents=True, exist_ok=True)
 
-    os.environ["SPATIALQUANT_SESSION_ROOT"] = str(runtime_root)
-    os.environ["SPATIALQUANT_SYSTEM_LANGUAGE"] = str(args.system_language)
+    os.environ["SPATIALPLEXOMERA_SESSION_ROOT"] = str(runtime_root)
+    os.environ["SPATIALPLEXOMERA_SYSTEM_LANGUAGE"] = str(args.system_language)
     os.environ["MPLCONFIGDIR"] = str(matplotlib_root)
     os.environ.setdefault("STREAMLIT_BROWSER_GATHER_USAGE_STATS", "false")
     os.environ.setdefault("STREAMLIT_CLIENT_TOOLBAR_MODE", "minimal")
     if args.settings_path is not None:
         args.settings_path.parent.mkdir(parents=True, exist_ok=True)
-        os.environ["SPATIALQUANT_SETTINGS_PATH"] = str(args.settings_path)
+        os.environ["SPATIALPLEXOMERA_SETTINGS_PATH"] = str(args.settings_path)
     if args.desktop_paths_path is not None:
         args.desktop_paths_path.parent.mkdir(parents=True, exist_ok=True)
-        os.environ["SPATIALQUANT_DESKTOP_PATHS_PATH"] = str(args.desktop_paths_path)
+        os.environ["SPATIALPLEXOMERA_DESKTOP_PATHS_PATH"] = str(args.desktop_paths_path)
 
 
 def run_smoke_test() -> int:
@@ -60,7 +60,7 @@ def run_smoke_test() -> int:
         "skimage": skimage.__version__,
         "streamlit": streamlit.__version__,
     }
-    print("SpatialQuant backend smoke test passed", versions, flush=True)
+    print("SpatialPlexomera backend smoke test passed", versions, flush=True)
     return 0
 
 
@@ -73,7 +73,7 @@ def main() -> int:
 
     app_path = bundled_root() / "app.py"
     if not app_path.exists():
-        raise FileNotFoundError(f"Bundled SpatialQuant app not found: {app_path}")
+        raise FileNotFoundError(f"Bundled SpatialPlexomera app not found: {app_path}")
 
     os.chdir(bundled_root())
     from streamlit.web import cli as streamlit_cli

@@ -1,18 +1,18 @@
-(function configureSpatialQuantDownload(global) {
+(function configureSpatialPlexomeraDownload(global) {
   "use strict";
 
-  const releasesApi = "https://api.github.com/repos/fengshuoliu/SpatialQuant/releases?per_page=100";
-  const releasePathPrefix = "/fengshuoliu/SpatialQuant/releases/download/";
+  const releasesApi = "https://api.github.com/repos/fengshuoliu/SpatialPlexomera/releases?per_page=100";
+  const releasePathPrefix = "/fengshuoliu/SpatialPlexomera/releases/download/";
   const platformConfiguration = Object.freeze({
     macos: Object.freeze({
       displayName: "macOS",
       tagPattern: /^v\d+(?:\.\d+){1,2}$/,
-      assetName: "SpatialQuant-macOS-universal.dmg",
+      assetName: "SpatialPlexomera-macOS-universal.dmg",
     }),
     windows: Object.freeze({
       displayName: "Windows",
       tagPattern: /^windows-v\d+(?:\.\d+){1,2}$/,
-      assetName: "SpatialQuant-Windows-x64-Setup.exe",
+      assetName: "SpatialPlexomera-Windows-x64-Setup.exe",
     }),
   });
 
@@ -89,8 +89,8 @@
         selected.asset.browser_download_url,
         selected.release,
         selected.configuration);
-      fallback.href = `https://github.com/fengshuoliu/SpatialQuant/releases/tag/${encodeURIComponent(selected.release.tag_name)}`;
-      fallback.textContent = `View SpatialQuant ${selected.release.tag_name}`;
+      fallback.href = `https://github.com/fengshuoliu/SpatialPlexomera/releases/tag/${encodeURIComponent(selected.release.tag_name)}`;
+      fallback.textContent = `View SpatialPlexomera ${selected.release.tag_name}`;
       status.textContent = `Starting the latest ${selected.configuration.displayName} download…`;
       global.location.replace(downloadUrl);
     } catch (error) {
@@ -102,7 +102,7 @@
     }
   }
 
-  global.SpatialQuantDownloadRouter = Object.freeze({
+  global.SpatialPlexomeraDownloadRouter = Object.freeze({
     platformConfiguration,
     selectLatestAsset,
     validatedDownloadUrl,

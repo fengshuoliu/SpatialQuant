@@ -16,8 +16,8 @@ BACKEND_SRC = Path(__file__).resolve().parents[1] / "backend" / "src"
 if str(BACKEND_SRC) not in sys.path:
     sys.path.insert(0, str(BACKEND_SRC))
 
-from spatialquant_analysis.models import RegionParams  # noqa: E402
-from spatialquant_analysis.region_analysis import (  # noqa: E402
+from spatialplexomera_analysis.models import RegionParams  # noqa: E402
+from spatialplexomera_analysis.region_analysis import (  # noqa: E402
     _load_boundary_registry,
     run_region_boundary_analysis,
     save_adjusted_region_analysis,
@@ -61,10 +61,10 @@ class RegionOutputFilenameTests(unittest.TestCase):
                 basename = Path(raw_path).name
                 self.assertNotRegex(basename, HASH_TOKEN_RE)
 
-    @patch("spatialquant_analysis.region_analysis.make_region_overlay_figure", return_value=_PreviewFigure())
+    @patch("spatialplexomera_analysis.region_analysis.make_region_overlay_figure", return_value=_PreviewFigure())
     def test_computational_outputs_use_stage_and_individual_cell_type_names(self, _figure: object) -> None:
         selected_types = [item["name"] for item in self.celltype_config]
-        with tempfile.TemporaryDirectory(prefix="spatialquant-region-names-") as temp_value:
+        with tempfile.TemporaryDirectory(prefix="spatialplexomera-region-names-") as temp_value:
             result = run_region_boundary_analysis(
                 df_cells=self.df_cells,
                 celltype_mask=self.celltype_mask,
@@ -100,13 +100,13 @@ class RegionOutputFilenameTests(unittest.TestCase):
             for path in result["saved_paths"]["mask_paths"].values():
                 self.assertNotIn(concatenated, Path(path).name)
 
-    @patch("spatialquant_analysis.region_analysis.make_region_overlay_figure", return_value=_PreviewFigure())
+    @patch("spatialplexomera_analysis.region_analysis.make_region_overlay_figure", return_value=_PreviewFigure())
     def test_adjusted_output_uses_display_label_but_keeps_hashed_registry_identity(self, _figure: object) -> None:
         mask_key = "manual_0123456789abcdef"
         display_name = "Tumor island (2)"
         adjusted_mask = np.zeros_like(self.celltype_mask, dtype=bool)
         adjusted_mask[3:15, 3:15] = True
-        with tempfile.TemporaryDirectory(prefix="spatialquant-adjusted-names-") as temp_value:
+        with tempfile.TemporaryDirectory(prefix="spatialplexomera-adjusted-names-") as temp_value:
             result = save_adjusted_region_analysis(
                 df_cells=self.df_cells,
                 celltype_mask=self.celltype_mask,
@@ -138,12 +138,12 @@ class RegionOutputFilenameTests(unittest.TestCase):
             self.assertEqual(entry["display_name"], display_name)
             self.assertEqual(entry["mask_path"], "adjusted__Tumor island (2)_region_mask_uint8.tiff")
 
-    @patch("spatialquant_analysis.region_analysis.make_roi_comparison_figure", return_value=_PreviewFigure())
+    @patch("spatialplexomera_analysis.region_analysis.make_roi_comparison_figure", return_value=_PreviewFigure())
     def test_manual_duplicate_labels_keep_visible_parenthesized_suffixes(self, _figure: object) -> None:
         roi_label_mask = np.zeros_like(self.celltype_mask, dtype=np.uint16)
         roi_label_mask[1:6, 1:6] = 1
         roi_label_mask[11:16, 11:16] = 2
-        with tempfile.TemporaryDirectory(prefix="spatialquant-manual-names-") as temp_value:
+        with tempfile.TemporaryDirectory(prefix="spatialplexomera-manual-names-") as temp_value:
             result = save_manual_roi_analysis(
                 df_cells=self.df_cells,
                 celltype_mask=self.celltype_mask,
@@ -176,7 +176,7 @@ class RegionOutputFilenameTests(unittest.TestCase):
             self.assert_public_paths_are_readable(result)
 
     def test_legacy_hashed_registry_path_still_loads(self) -> None:
-        with tempfile.TemporaryDirectory(prefix="spatialquant-region-legacy-") as temp_value:
+        with tempfile.TemporaryDirectory(prefix="spatialplexomera-region-legacy-") as temp_value:
             save_dir = Path(temp_value)
             legacy_mask = save_dir / "manual_deadbeefcafe_region_mask_uint8.tiff"
             legacy_mask.write_bytes(b"legacy mask placeholder")

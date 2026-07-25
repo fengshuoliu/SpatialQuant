@@ -11,7 +11,7 @@ $RepositoryRoot = Split-Path -Parent $WindowsRoot
 $BackendRoot = Join-Path $WindowsRoot "backend"
 $DesktopRoot = Join-Path $WindowsRoot "desktop"
 $BuildRoot = Join-Path $WindowsRoot "build"
-$BackendDist = Join-Path $BuildRoot "SpatialQuantBackend"
+$BackendDist = Join-Path $BuildRoot "SpatialPlexomeraBackend"
 $PyInstallerWork = Join-Path $BuildRoot "pyinstaller-work"
 $SmokeRoot = Join-Path $BuildRoot "smoke-output"
 $BackendSmokeRoot = Join-Path $BuildRoot "backend-smoke"
@@ -55,10 +55,10 @@ try {
         --clean `
         --distpath $BuildRoot `
         --workpath $PyInstallerWork `
-        (Join-Path $BackendRoot "SpatialQuantBackend.spec")
+        (Join-Path $BackendRoot "SpatialPlexomeraBackend.spec")
     Assert-NativeSuccess "PyInstaller backend build"
 
-    $BackendExe = Join-Path $BackendDist "SpatialQuantBackend.exe"
+    $BackendExe = Join-Path $BackendDist "SpatialPlexomeraBackend.exe"
     if (-not (Test-Path $BackendExe)) {
         throw "PyInstaller did not produce $BackendExe"
     }
@@ -131,8 +131,8 @@ try {
 
     $DesktopDist = Join-Path $DesktopRoot "dist"
     $Version = (Get-Content (Join-Path $DesktopRoot "package.json") | ConvertFrom-Json).version
-    $SetupExe = Join-Path $DesktopDist "SpatialQuant-Windows-x64-Setup-$Version.exe"
-    $PortableExe = Join-Path $DesktopDist "SpatialQuant-Windows-x64-Portable-$Version.exe"
+    $SetupExe = Join-Path $DesktopDist "SpatialPlexomera-Windows-x64-Setup-$Version.exe"
+    $PortableExe = Join-Path $DesktopDist "SpatialPlexomera-Windows-x64-Portable-$Version.exe"
     $UpdateMetadata = Join-Path $DesktopDist "latest.yml"
     foreach ($RequiredPath in @($SetupExe, $PortableExe, $UpdateMetadata)) {
         if (-not (Test-Path $RequiredPath)) {
@@ -151,7 +151,7 @@ try {
         [System.Text.Encoding]::ASCII
     )
 
-    Write-Host "SpatialQuant Windows $Version is ready in $DesktopDist"
+    Write-Host "SpatialPlexomera Windows $Version is ready in $DesktopDist"
 }
 finally {
     Pop-Location
